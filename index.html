@@ -8,7 +8,7 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --black: #0a0a0a; --white: #f5f0e8; --accent: #e8c84a; --card-bg: #141414; --muted: #888;
+    --black: #0a0a0a; --white: #f5f0e8; --accent: #e8c84a; --card-bg: #141414; --muted: #666;
   }
   html, body {
     width: 100%; height: 100%; overflow: hidden;
@@ -21,7 +21,7 @@
     width: 100%; height: 100%; display: flex;
     transition: transform 0.45s cubic-bezier(0.77,0,0.18,1); will-change: transform;
   }
-  .slide { min-width: 100%; height: 100%; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+  .slide { min-width: 100%; height: 100%; display: flex; flex-direction: column; overflow: hidden; }
 
   /* HERO */
   .slide-hero { background: var(--black); justify-content: center; align-items: center; text-align: center; padding: 40px 24px; }
@@ -39,65 +39,64 @@
     animation: pulse 2s infinite; white-space: nowrap;
   }
   @keyframes pulse {
-    0%,100% { opacity:0.5; transform:translateX(-50%) translateX(0); }
-    50% { opacity:1; transform:translateX(-50%) translateX(6px); }
+    0%,100%{opacity:.5;transform:translateX(-50%) translateX(0)}
+    50%{opacity:1;transform:translateX(-50%) translateX(6px)}
   }
 
   /* DAY SLIDES */
   .slide-day { background: var(--black); }
   .day-hero { position: relative; height: 165px; overflow: hidden; flex-shrink: 0; }
-  .day-hero-bg { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; filter: brightness(0.5) saturate(1.1); }
+  .day-hero-bg { width: 100%; height: 100%; object-fit: cover; object-position: center 25%; filter: brightness(0.45) saturate(1.1); }
   .day-hero-overlay {
     position: absolute; inset: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(10,10,10,0.97) 100%);
+    background: linear-gradient(to bottom, transparent 0%, rgba(10,10,10,0.97) 100%);
     display: flex; flex-direction: column; justify-content: flex-end; padding: 14px 18px;
   }
   .day-badge { font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 3px; color: var(--accent); margin-bottom: 3px; }
   .day-title { font-family: 'Bebas Neue', sans-serif; font-size: 30px; line-height: 1; color: var(--white); }
-  .day-focus { font-size: 11px; color: rgba(245,240,232,0.5); margin-top: 3px; text-transform: uppercase; letter-spacing: 1.5px; }
+  .day-focus { font-size: 11px; color: rgba(245,240,232,0.45); margin-top: 3px; text-transform: uppercase; letter-spacing: 1.5px; }
 
   /* EXERCISE LIST */
-  .exercises-list { flex: 1; overflow-y: auto; padding: 6px 14px 90px; -webkit-overflow-scrolling: touch; }
+  .exercises-list { flex: 1; overflow-y: auto; padding: 8px 14px 90px; -webkit-overflow-scrolling: touch; }
   .exercises-list::-webkit-scrollbar { display: none; }
-  .exercise-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid #1c1c1c; }
+  .exercise-row { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid #1a1a1a; }
   .exercise-row:last-child { border-bottom: none; }
 
-  /* GIF THUMBNAIL — 96px */
+  /* VIDEO THUMBNAIL — 96×96 */
   .ex-thumb {
-    width: 96px; height: 96px; border-radius: 12px; overflow: hidden; flex-shrink: 0;
-    background: #1a1a1a; border: 1px solid #2a2a2a; position: relative; cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
+    width: 96px; height: 96px; border-radius: 12px; overflow: hidden;
+    flex-shrink: 0; background: #111; border: 1px solid #2a2a2a;
+    position: relative; cursor: pointer; -webkit-tap-highlight-color: transparent;
   }
   .ex-thumb img {
-    width: 100%; height: 100%; object-fit: cover; object-position: center top;
-    display: block; transition: opacity 0.3s;
+    width: 100%; height: 100%; object-fit: cover; object-position: center;
+    display: block;
   }
-  .ex-thumb .expand-btn {
-    position: absolute; bottom: 5px; right: 5px;
-    background: rgba(0,0,0,0.7); border-radius: 6px;
-    width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
-    pointer-events: none;
+  /* Play button overlay */
+  .play-overlay {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.35);
+    transition: background 0.2s;
   }
-  .ex-thumb .expand-btn svg { width: 12px; height: 12px; }
-  .ex-thumb .gif-label {
-    position: absolute; top: 5px; left: 5px;
-    background: var(--accent); color: #000;
-    font-family: 'Bebas Neue', sans-serif; font-size: 9px; letter-spacing: 1px;
-    padding: 1px 4px; border-radius: 4px; pointer-events: none;
+  .ex-thumb:active .play-overlay { background: rgba(0,0,0,0.55); }
+  .play-circle {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(232,200,74,0.92);
+    display: flex; align-items: center; justify-content: center;
   }
+  .play-circle svg { width: 14px; height: 14px; fill: #000; margin-left: 2px; }
 
   .new-badge {
     display: inline-block; margin-left: 5px; background: var(--accent); color: #000;
     font-size: 9px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 1px;
     padding: 1px 5px; border-radius: 4px; vertical-align: middle; line-height: 14px;
   }
-
-  .ex-num { font-family: 'Bebas Neue', sans-serif; font-size: 17px; color: var(--accent); min-width: 20px; line-height: 1; text-align: center; }
+  .ex-num { font-family: 'Bebas Neue', sans-serif; font-size: 17px; color: var(--accent); min-width: 20px; text-align: center; }
   .ex-info { flex: 1; min-width: 0; }
   .ex-name { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 3px; line-height: 1.3; }
   .ex-why { font-size: 11px; color: var(--muted); line-height: 1.3; }
   .ex-tag {
-    background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 20px;
+    background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 20px;
     padding: 5px 10px; font-size: 11px; font-family: 'Bebas Neue', sans-serif;
     letter-spacing: 1px; color: var(--accent); white-space: nowrap; flex-shrink: 0;
   }
@@ -115,97 +114,78 @@
   .rule-label { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 3px; }
   .rule-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
 
-  /* ── NAV BAR — bigger ── */
+  /* ── NAV BAR ── */
   .nav-bar {
     position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
     display: flex; align-items: center; gap: 12px; z-index: 100;
-    background: rgba(0,0,0,0.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-    padding: 10px 16px; border-radius: 32px; border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(10,10,10,0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    padding: 10px 16px; border-radius: 32px; border: 1px solid rgba(255,255,255,0.08);
   }
   .nav-arrow {
-    width: 40px; height: 40px; border-radius: 50%;
-    background: #222; border: 1px solid #333;
+    width: 42px; height: 42px; border-radius: 50%;
+    background: #1e1e1e; border: 1px solid #333;
     display: flex; align-items: center; justify-content: center; cursor: pointer;
     transition: background 0.15s, transform 0.1s; flex-shrink: 0;
     -webkit-tap-highlight-color: transparent;
   }
-  .nav-arrow:active { background: var(--accent); transform: scale(0.93); }
+  .nav-arrow:active { background: var(--accent); transform: scale(0.92); }
   .nav-arrow:active svg { stroke: #000; }
   .nav-arrow svg { width: 18px; height: 18px; fill: none; stroke: var(--white); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
-  .nav-dots-inner { display: flex; gap: 8px; align-items: center; }
-  .dot {
-    width: 10px; height: 10px; border-radius: 50%;
-    background: rgba(255,255,255,0.2); transition: all 0.3s ease; cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-  }
+  .dots-wrap { display: flex; gap: 8px; align-items: center; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.18); transition: all 0.3s ease; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .dot.active { background: var(--accent); width: 26px; border-radius: 5px; }
 
-  /* ── FULLSCREEN MODAL ── */
+  /* ── MODAL ── */
   #modal {
     position: fixed; inset: 0; z-index: 500;
-    background: rgba(0,0,0,0.96);
+    background: rgba(0,0,0,0.97);
     display: none; flex-direction: column; align-items: center; justify-content: center;
-    padding: 16px;
+    padding: 12px;
   }
   #modal.open { display: flex; }
-  .modal-inner {
-    width: 100%; max-width: 440px;
-    background: #111; border-radius: 24px; overflow: hidden;
-    box-shadow: 0 40px 100px rgba(0,0,0,0.9);
-    display: flex; flex-direction: column;
+  .modal-card {
+    width: 100%; max-width: 460px;
+    background: #111; border-radius: 22px; overflow: hidden;
+    border: 1px solid #222; display: flex; flex-direction: column;
   }
-  .modal-header {
+  .modal-topbar {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 18px 20px 14px; border-bottom: 1px solid #1e1e1e; flex-shrink: 0;
+    padding: 16px 18px 12px; border-bottom: 1px solid #1e1e1e;
   }
-  .modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--white); letter-spacing: 1px; }
-  .modal-close {
-    width: 36px; height: 36px; border-radius: 50%; background: #222; border: none;
-    display: flex; align-items: center; justify-content: center; cursor: pointer;
-    -webkit-tap-highlight-color: transparent; flex-shrink: 0;
+  .modal-name { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--white); letter-spacing: 1px; }
+  .modal-x {
+    width: 36px; height: 36px; border-radius: 50%; background: #222; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent;
+    flex-shrink: 0;
   }
-  .modal-close svg { width: 14px; height: 14px; fill: none; stroke: var(--white); stroke-width: 2.5; stroke-linecap: round; }
-  /* Square GIF area */
-  .modal-media {
-    width: 100%; aspect-ratio: 1/1; background: #000;
-    position: relative; overflow: hidden; flex-shrink: 0;
+  .modal-x svg { width: 14px; height: 14px; fill: none; stroke: var(--white); stroke-width: 2.5; stroke-linecap: round; }
+  /* 16:9 YouTube embed */
+  .modal-video {
+    width: 100%; aspect-ratio: 16/9; background: #000; position: relative;
   }
-  .modal-media img {
-    width: 100%; height: 100%; object-fit: contain; background: #000; display: block;
+  .modal-video iframe {
+    width: 100%; height: 100%; border: none; display: block;
   }
-  .modal-media .media-placeholder {
-    width: 100%; height: 100%; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 12px;
-    background: #0e0e0e;
-  }
-  .modal-media .media-placeholder .big-spinner {
-    width: 40px; height: 40px; border: 3px solid #222; border-top-color: var(--accent);
-    border-radius: 50%; animation: spin 0.7s linear infinite;
-  }
-  .modal-media .media-placeholder p { font-size: 12px; color: var(--muted); }
-  .modal-info { padding: 16px 20px 20px; border-top: 1px solid #1e1e1e; flex-shrink: 0; }
-  .modal-sets { font-family: 'Bebas Neue', sans-serif; font-size: 30px; color: var(--accent); margin-bottom: 4px; letter-spacing: 1px; }
-  .modal-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  .modal-footer { padding: 14px 18px 18px; border-top: 1px solid #1e1e1e; }
+  .modal-sets { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--accent); margin-bottom: 3px; }
+  .modal-why { font-size: 12px; color: var(--muted); line-height: 1.5; }
 </style>
 </head>
 <body>
 
 <!-- MODAL -->
 <div id="modal">
-  <div class="modal-inner">
-    <div class="modal-header">
-      <div class="modal-title" id="modal-title">Exercise</div>
-      <button class="modal-close" id="modal-close-btn" aria-label="Close">
+  <div class="modal-card">
+    <div class="modal-topbar">
+      <div class="modal-name" id="modal-name">Exercise</div>
+      <button class="modal-x" id="modal-x">
         <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
-    <div class="modal-media" id="modal-media">
-      <div class="media-placeholder"><div class="big-spinner"></div><p>Loading…</p></div>
-    </div>
-    <div class="modal-info">
+    <div class="modal-video" id="modal-video"></div>
+    <div class="modal-footer">
       <div class="modal-sets" id="modal-sets"></div>
-      <div class="modal-desc" id="modal-desc"></div>
+      <div class="modal-why" id="modal-why"></div>
     </div>
   </div>
 </div>
@@ -214,7 +194,7 @@
 <div class="carousel" id="carousel">
 
   <!-- HERO -->
-  <div class="slide slide-hero">
+  <div class="slide slide-hero" style="position:relative;">
     <div class="hero-eyebrow">Your Complete Plan</div>
     <div class="hero-title">5<span>-</span>Day<br>Strength<br>Guide</div>
     <p class="hero-sub">Train hard. Progress weekly. Same plan for both of you — adjust weight only.</p>
@@ -239,7 +219,7 @@
         <div class="day-focus">5 exercises · Power focus</div>
       </div>
     </div>
-    <div class="exercises-list" id="day1-list"></div>
+    <div class="exercises-list" id="day1"></div>
   </div>
 
   <!-- DAY 2 -->
@@ -252,7 +232,7 @@
         <div class="day-focus">4 exercises · Chest & Shoulders</div>
       </div>
     </div>
-    <div class="exercises-list" id="day2-list"></div>
+    <div class="exercises-list" id="day2"></div>
   </div>
 
   <!-- DAY 3 -->
@@ -265,7 +245,7 @@
         <div class="day-focus">4 exercises · Posterior chain</div>
       </div>
     </div>
-    <div class="exercises-list" id="day3-list"></div>
+    <div class="exercises-list" id="day3"></div>
   </div>
 
   <!-- DAY 4 -->
@@ -278,7 +258,7 @@
         <div class="day-focus">4 exercises · Back & Posture</div>
       </div>
     </div>
-    <div class="exercises-list" id="day4-list"></div>
+    <div class="exercises-list" id="day4"></div>
   </div>
 
   <!-- DAY 5 -->
@@ -291,7 +271,7 @@
         <div class="day-focus">4 exercises · Total power</div>
       </div>
     </div>
-    <div class="exercises-list" id="day5-list"></div>
+    <div class="exercises-list" id="day5"></div>
   </div>
 
   <!-- RULES -->
@@ -313,188 +293,162 @@
 
 <!-- NAV -->
 <div class="nav-bar">
-  <div class="nav-arrow" id="nav-prev"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
-  <div class="nav-dots-inner" id="dots"></div>
-  <div class="nav-arrow" id="nav-next"><svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></div>
+  <div class="nav-arrow" id="prev"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
+  <div class="dots-wrap" id="dots"></div>
+  <div class="nav-arrow" id="next"><svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></div>
 </div>
 
 <script>
-// ─────────────────────────────────────────────────────────────────
-// EXERCISE DATA — hardcoded verified GIF IDs from inspireusafoundation.org
-// These are the correct animated GIFs, fully public, no API key needed
-// ─────────────────────────────────────────────────────────────────
-const BASE_GIF = 'https://www.inspireusafoundation.org/wp-content/uploads/';
-
+// ─────────────────────────────────────────────────
+// EXERCISE DATA
+// thumb: YouTube video ID → used for thumbnail img src
+//        https://img.youtube.com/vi/{ID}/mqdefault.jpg  (320×180, always works)
+// yt:    YouTube video ID for embed in modal
+// ─────────────────────────────────────────────────
 const DAYS = [
-  {
-    id: 'day1-list',
-    exercises: [
-      { num:'01', name:'Hip Thrust',            sets:'4×8',      why:'Best glute strength builder',   gif: BASE_GIF + '2022/12/barbell-hip-thrust.gif',            isNew: false },
-      { num:'02', name:'Barbell Squat',          sets:'3×6–8',    why:'Full lower body power',         gif: BASE_GIF + '2022/01/barbell-back-squat.gif',            isNew: false },
-      { num:'03', name:'Leg Press',              sets:'3×10',     why:'Quad overload, joint-friendly', gif: BASE_GIF + '2022/08/sled-45-leg-press.gif',             isNew: true  },
-      { num:'04', name:'Bulgarian Split Squat',  sets:'3×8/leg',  why:'Balance + shape',               gif: BASE_GIF + '2022/08/dumbbell-bulgarian-split-squat.gif',isNew: false },
-      { num:'05', name:'Calf Raises',            sets:'3×12–15',  why:'Lower leg strength',            gif: BASE_GIF + '2022/09/standing-calf-raise.gif',          isNew: false },
-    ]
-  },
-  {
-    id: 'day2-list',
-    exercises: [
-      { num:'01', name:'DB Bench Press',    sets:'4×8',   why:'Upper body strength',   gif: BASE_GIF + '2021/10/dumbbell-bench-press.gif'       },
-      { num:'02', name:'Shoulder Press',    sets:'3×8',   why:'Shoulder size & power', gif: BASE_GIF + '2021/11/dumbbell-shoulder-press.gif'    },
-      { num:'03', name:'Lateral Raise',     sets:'3×12',  why:'Shoulder definition',   gif: BASE_GIF + '2022/01/dumbbell-lateral-raise.gif'     },
-      { num:'04', name:'Triceps Pushdown',  sets:'3×12',  why:'Arm strength',          gif: BASE_GIF + '2021/12/cable-tricep-pushdown.gif'      },
-    ]
-  },
-  {
-    id: 'day3-list',
-    exercises: [
-      { num:'01', name:'Romanian Deadlift', sets:'4×8',      why:'Glutes + hamstrings',  gif: BASE_GIF + '2022/01/romanian-deadlift.gif'        },
-      { num:'02', name:'Hip Thrust',        sets:'3×10',     why:'Extra glute growth',   gif: BASE_GIF + '2022/12/barbell-hip-thrust.gif'       },
-      { num:'03', name:'Leg Curl',          sets:'3×10',     why:'Hamstring isolation',  gif: BASE_GIF + '2022/06/lying-leg-curl.gif'           },
-      { num:'04', name:'Seated Calf Raise', sets:'3×12–15',  why:'Deep calf muscle',     gif: BASE_GIF + '2022/09/seated-calf-raise.gif'        },
-    ]
-  },
-  {
-    id: 'day4-list',
-    exercises: [
-      { num:'01', name:'Lat Pulldown',  sets:'4×8',      why:'Back width',        gif: BASE_GIF + '2021/11/lat-pulldown.gif'              },
-      { num:'02', name:'Seated Row',    sets:'3×10',     why:'Posture + thickness',gif: BASE_GIF + '2021/12/cable-seated-row.gif'         },
-      { num:'03', name:'DB Row',        sets:'3×10/side',why:'Fix imbalances',    gif: BASE_GIF + '2021/11/dumbbell-single-arm-row.gif'   },
-      { num:'04', name:'Face Pull',     sets:'3×12',     why:'Shoulder health',   gif: BASE_GIF + '2022/01/cable-face-pull.gif'           },
-    ]
-  },
-  {
-    id: 'day5-list',
-    exercises: [
-      { num:'01', name:'Deadlift',    sets:'4×5',    why:'Full body strength', gif: BASE_GIF + '2022/01/barbell-deadlift.gif'          },
-      { num:'02', name:'Goblet Squat',sets:'3×12',   why:'Control & mobility', gif: BASE_GIF + '2021/12/dumbbell-goblet-squat.gif'    },
-      { num:'03', name:'Plank',       sets:'40s',    why:'Core stability',     gif: BASE_GIF + '2021/12/plank.gif'                    },
-      { num:'04', name:'Dead Bug',    sets:'10/side',why:'Core control',       gif: BASE_GIF + '2022/01/dead-bug.gif'                 },
-    ]
-  }
+  { id:'day1', exercises:[
+    { num:'01', name:'Hip Thrust',           sets:'4×8',      why:'Best glute strength builder',   yt:'xsEMVgzs_AA', isNew:false },
+    { num:'02', name:'Barbell Squat',        sets:'3×6–8',    why:'Full lower body power',         yt:'1oed-UmAxFs', isNew:false },
+    { num:'03', name:'Leg Press',            sets:'3×10',     why:'Quad overload, joint-friendly', yt:'IZxyjW7MPJQ', isNew:true  },
+    { num:'04', name:'Bulgarian Split Squat',sets:'3×8/leg',  why:'Balance + shape',               yt:'2C-uNgKwPLE', isNew:false },
+    { num:'05', name:'Calf Raises',          sets:'3×12–15',  why:'Lower leg strength',            yt:'gwLzBJYoWlI', isNew:false },
+  ]},
+  { id:'day2', exercises:[
+    { num:'01', name:'DB Bench Press',   sets:'4×8',  why:'Upper body strength',   yt:'VmB1G1K7v94' },
+    { num:'02', name:'Shoulder Press',   sets:'3×8',  why:'Shoulder size & power', yt:'qEwKCR5JCog' },
+    { num:'03', name:'Lateral Raise',    sets:'3×12', why:'Shoulder definition',   yt:'3VcKaXpzqRo' },
+    { num:'04', name:'Triceps Pushdown', sets:'3×12', why:'Arm strength',          yt:'2-LAMcpzODU' },
+  ]},
+  { id:'day3', exercises:[
+    { num:'01', name:'Romanian Deadlift',sets:'4×8',     why:'Glutes + hamstrings',  yt:'JCXUYuzwNrM' },
+    { num:'02', name:'Hip Thrust',       sets:'3×10',    why:'Extra glute growth',   yt:'xsEMVgzs_AA' },
+    { num:'03', name:'Leg Curl',         sets:'3×10',    why:'Hamstring isolation',  yt:'n_JJzNpBuTA' },
+    { num:'04', name:'Seated Calf Raise',sets:'3×12–15', why:'Deep calf muscle',     yt:'JbyjNymZOt0' },
+  ]},
+  { id:'day4', exercises:[
+    { num:'01', name:'Lat Pulldown', sets:'4×8',      why:'Back width',          yt:'CAwf7n6Luuc' },
+    { num:'02', name:'Seated Row',   sets:'3×10',     why:'Posture + thickness', yt:'GZbfZ033f74' },
+    { num:'03', name:'DB Row',       sets:'3×10/side',why:'Fix imbalances',      yt:'roCP6wCXPqo' },
+    { num:'04', name:'Face Pull',    sets:'3×12',     why:'Shoulder health',     yt:'rep-qVOkqgk' },
+  ]},
+  { id:'day5', exercises:[
+    { num:'01', name:'Deadlift',    sets:'4×5',    why:'Full body strength', yt:'op9kVnSso6Q' },
+    { num:'02', name:'Goblet Squat',sets:'3×12',   why:'Control & mobility', yt:'MeIiIdhvXT4' },
+    { num:'03', name:'Plank',       sets:'40s',    why:'Core stability',     yt:'ASdvN_XEl_c' },
+    { num:'04', name:'Dead Bug',    sets:'10/side',why:'Core control',       yt:'4XLEnwUr1d8' },
+  ]},
 ];
 
-// Expand icon SVG
-const EXPAND_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>`;
+// Build thumbnail URL from YouTube ID
+function ytThumb(id) {
+  return `https://img.youtube.com/vi/${id}/mqdefault.jpg`;
+}
 
-// Build exercise rows
+// Build rows
 DAYS.forEach(day => {
-  const container = document.getElementById(day.id);
+  const el = document.getElementById(day.id);
   day.exercises.forEach(ex => {
     const row = document.createElement('div');
     row.className = 'exercise-row';
-
-    // Fallback image (static Unsplash) shown while GIF loads or if it fails
-    const fallbackUrl = `https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=200&h=200&fit=crop`;
-
     row.innerHTML = `
       <div class="ex-num">${ex.num}</div>
-      <div class="ex-thumb" data-gif="${ex.gif}" data-name="${ex.name}" data-sets="${ex.sets}" data-why="${ex.why}">
-        <img src="${ex.gif}" alt="${ex.name}" onerror="this.src='${fallbackUrl}'">
-        <div class="gif-label">GIF</div>
-        <div class="expand-btn">${EXPAND_SVG}</div>
+      <div class="ex-thumb" role="button" aria-label="Watch ${ex.name}">
+        <img src="${ytThumb(ex.yt)}" alt="${ex.name}" loading="lazy">
+        <div class="play-overlay">
+          <div class="play-circle">
+            <svg viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg>
+          </div>
+        </div>
       </div>
       <div class="ex-info">
-        <div class="ex-name">${ex.name}${ex.isNew ? '<span class="new-badge">NEW</span>' : ''}</div>
+        <div class="ex-name">${ex.name}${ex.isNew?'<span class="new-badge">NEW</span>':''}</div>
         <div class="ex-why">${ex.why}</div>
       </div>
       <div class="ex-tag">${ex.sets}</div>
     `;
-    container.appendChild(row);
-
-    // Attach click to thumbnail
     row.querySelector('.ex-thumb').addEventListener('click', () => openModal(ex));
+    el.appendChild(row);
   });
 });
 
 // ── MODAL ──
-const modal      = document.getElementById('modal');
-const modalTitle = document.getElementById('modal-title');
-const modalMedia = document.getElementById('modal-media');
-const modalSets  = document.getElementById('modal-sets');
-const modalDesc  = document.getElementById('modal-desc');
+const modal     = document.getElementById('modal');
+const modalName = document.getElementById('modal-name');
+const modalVid  = document.getElementById('modal-video');
+const modalSets = document.getElementById('modal-sets');
+const modalWhy  = document.getElementById('modal-why');
 
 function openModal(ex) {
-  modalTitle.textContent = ex.name;
-  modalSets.textContent  = ex.sets;
-  modalDesc.textContent  = ex.why;
-
-  // Show spinner first
-  modalMedia.innerHTML = `<div class="media-placeholder"><div class="big-spinner"></div><p>Loading animation…</p></div>`;
-
+  modalName.textContent = ex.name;
+  modalSets.textContent = ex.sets;
+  modalWhy.textContent  = ex.why;
+  // Embed YouTube with autoplay, mute=0 so they can hear coaching cues
+  modalVid.innerHTML = `<iframe
+    src="https://www.youtube.com/embed/${ex.yt}?autoplay=1&rel=0&modestbranding=1&playsinline=1"
+    allow="autoplay; encrypted-media; picture-in-picture"
+    allowfullscreen
+    loading="lazy">
+  </iframe>`;
   modal.classList.add('open');
-
-  // Load GIF
-  const img = new Image();
-  img.onload = () => {
-    modalMedia.innerHTML = '';
-    modalMedia.appendChild(img);
-  };
-  img.onerror = () => {
-    modalMedia.innerHTML = `<div class="media-placeholder"><p style="color:var(--muted)">Image unavailable</p></div>`;
-  };
-  img.src = ex.gif;
-  img.alt = ex.name;
-  img.style.cssText = 'width:100%;height:100%;object-fit:contain;background:#000;display:block;';
 }
 
 function closeModal() {
   modal.classList.remove('open');
-  modalMedia.innerHTML = '';
+  modalVid.innerHTML = ''; // stop video
 }
 
-document.getElementById('modal-close-btn').addEventListener('click', closeModal);
+document.getElementById('modal-x').addEventListener('click', closeModal);
 modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
 
 // ── CAROUSEL ──
-const carousel    = document.getElementById('carousel');
-const dotsEl      = document.getElementById('dots');
-const totalSlides = carousel.children.length;
-let current = 0, startX = 0, isDragging = false, dragDelta = 0;
+const carousel = document.getElementById('carousel');
+const dotsWrap = document.getElementById('dots');
+const total    = carousel.children.length;
+let cur = 0, sx = 0, dragging = false, dx = 0;
 
-for (let i = 0; i < totalSlides; i++) {
+for (let i = 0; i < total; i++) {
   const d = document.createElement('div');
-  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.className = 'dot' + (i===0?' active':'');
   d.addEventListener('click', () => goTo(i));
-  dotsEl.appendChild(d);
+  dotsWrap.appendChild(d);
 }
 
-function goTo(idx) {
-  current = Math.max(0, Math.min(totalSlides - 1, idx));
-  carousel.style.transform = `translateX(-${current * 100}%)`;
-  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+function goTo(i) {
+  cur = Math.max(0, Math.min(total-1, i));
+  carousel.style.transform = `translateX(-${cur*100}%)`;
+  dotsWrap.querySelectorAll('.dot').forEach((d,j) => d.classList.toggle('active', j===cur));
 }
 
-document.getElementById('nav-prev').addEventListener('click', () => goTo(current - 1));
-document.getElementById('nav-next').addEventListener('click', () => goTo(current + 1));
+document.getElementById('prev').addEventListener('click', () => goTo(cur-1));
+document.getElementById('next').addEventListener('click', () => goTo(cur+1));
 
 carousel.addEventListener('touchstart', e => {
   if (modal.classList.contains('open')) return;
-  startX = e.touches[0].clientX; isDragging = true;
+  sx = e.touches[0].clientX; dragging = true;
   carousel.style.transition = 'none';
-}, { passive: true });
+}, {passive:true});
 
 carousel.addEventListener('touchmove', e => {
-  if (!isDragging || modal.classList.contains('open')) return;
-  dragDelta = e.touches[0].clientX - startX;
-  carousel.style.transform = `translateX(${-(current * 100) + (dragDelta / window.innerWidth * 100)}%)`;
-}, { passive: true });
+  if (!dragging || modal.classList.contains('open')) return;
+  dx = e.touches[0].clientX - sx;
+  carousel.style.transform = `translateX(${-(cur*100)+(dx/innerWidth*100)}%)`;
+}, {passive:true});
 
 carousel.addEventListener('touchend', () => {
-  if (!isDragging) return;
-  isDragging = false;
+  if (!dragging) return;
+  dragging = false;
   carousel.style.transition = 'transform 0.45s cubic-bezier(0.77,0,0.18,1)';
-  if (dragDelta < -50) goTo(current + 1);
-  else if (dragDelta > 50) goTo(current - 1);
-  else goTo(current);
-  dragDelta = 0;
+  if (dx < -50) goTo(cur+1);
+  else if (dx > 50) goTo(cur-1);
+  else goTo(cur);
+  dx = 0;
 });
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeModal(); return; }
+  if (e.key==='Escape') { closeModal(); return; }
   if (modal.classList.contains('open')) return;
-  if (e.key === 'ArrowRight') goTo(current + 1);
-  if (e.key === 'ArrowLeft')  goTo(current - 1);
+  if (e.key==='ArrowRight') goTo(cur+1);
+  if (e.key==='ArrowLeft')  goTo(cur-1);
 });
 </script>
 </body>
