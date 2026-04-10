@@ -309,7 +309,7 @@ const DAYS = [
   { id:'day1', exercises:[
     { num:'01', name:'Hip Thrust',           sets:'4×8',      why:'Best glute strength builder',   yt:'5S8SApGU_Lk', isNew:false },
     { num:'02', name:'Barbell Squat',        sets:'3×6–8',    why:'Full lower body power',         yt:'1oed-UmAxFs', isNew:false },
-    { num:'03', name:'Leg Press',            sets:'3×10',     why:'Quad overload, joint-friendly', yt:'IZxyjW7MPJQ', isNew:true  },
+    { num:'03', name:'Leg Press',            sets:'3×10',     why:'Quad overload, joint-friendly', yt:'IZxyjW7MPJQ', isNew:false  },
     { num:'04', name:'Bulgarian Split Squat',sets:'3×8/leg',  why:'Balance + shape',               yt:'2C-uNgKwPLE', isNew:false },
     { num:'05', name:'Calf Raises',          sets:'3×12–15',  why:'Lower leg strength',            yt:'gwLzBJYoWlI', isNew:false },
   ]},
@@ -361,7 +361,7 @@ DAYS.forEach(day => {
         </div>
       </div>
       <div class="ex-info">
-        <div class="ex-name">${ex.name}${ex.isNew?:''}</div>
+        <div class="ex-name">${ex.name}${ex.isNew?'<span class="new-badge">NEW</span>':''}</div>
         <div class="ex-why">${ex.why}</div>
       </div>
       <div class="ex-tag">${ex.sets}</div>
