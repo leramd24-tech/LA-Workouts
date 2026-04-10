@@ -197,7 +197,7 @@
   <div class="slide slide-hero" style="position:relative;">
     <div class="hero-eyebrow">Your Complete Plan</div>
     <div class="hero-title">5<span>-</span>Day<br>Strength<br>Guide</div>
-    <p class="hero-sub">Train hard. Progress weekly. Same plan for both of you — adjust weight only.</p>
+    <p class="hero-sub">Train hard. Progress weekly. Adjust weight only.</p>
     <div class="hero-grid">
       <div class="hero-stat"><span class="stat-num">5</span><span class="stat-label">Days/Week</span></div>
       <div class="hero-stat"><span class="stat-num">60<span style="font-size:16px">m</span></span><span class="stat-label">Per Session</span></div>
@@ -361,7 +361,7 @@ DAYS.forEach(day => {
         </div>
       </div>
       <div class="ex-info">
-        <div class="ex-name">${ex.name}${ex.isNew?'<span class="new-badge">NEW</span>':''}</div>
+        <div class="ex-name">${ex.name}${ex.isNew?:''}</div>
         <div class="ex-why">${ex.why}</div>
       </div>
       <div class="ex-tag">${ex.sets}</div>
