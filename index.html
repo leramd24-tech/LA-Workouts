@@ -15,6 +15,19 @@
     background: var(--black); font-family: 'DM Sans', sans-serif;
     color: var(--white); touch-action: none;
   }
+
+  /* ── LOADING ── */
+  #loading-screen {
+    position: fixed; inset: 0; background: var(--black);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    z-index: 999; gap: 20px;
+  }
+  .loading-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--white); letter-spacing: 3px; }
+  .loading-bar-wrap { width: 200px; height: 3px; background: #222; border-radius: 2px; overflow: hidden; }
+  .loading-bar { height: 100%; background: var(--accent); border-radius: 2px; width: 0%; transition: width 0.3s ease; }
+  .loading-status { font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+
+  /* ── CAROUSEL ── */
   .carousel {
     width: 100%; height: 100%; display: flex;
     transition: transform 0.45s cubic-bezier(0.77,0,0.18,1); will-change: transform;
@@ -32,7 +45,7 @@
   .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--accent); display: block; }
   .stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
   .swipe-hint {
-    position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+    position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
     display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted);
     animation: pulse 2s infinite; white-space: nowrap;
   }
@@ -43,36 +56,59 @@
 
   /* DAY SLIDES */
   .slide-day { background: var(--black); }
-  .day-hero { position: relative; height: 200px; overflow: hidden; flex-shrink: 0; }
-  .day-hero img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; filter: brightness(0.5) saturate(1.1); }
+  .day-hero { position: relative; height: 175px; overflow: hidden; flex-shrink: 0; }
+  .day-hero-bg { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; filter: brightness(0.5) saturate(1.1); }
   .day-hero-overlay {
     position: absolute; inset: 0;
     background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(10,10,10,0.97) 100%);
-    display: flex; flex-direction: column; justify-content: flex-end; padding: 18px 20px;
+    display: flex; flex-direction: column; justify-content: flex-end; padding: 14px 18px;
   }
-  .day-badge { font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 3px; color: var(--accent); margin-bottom: 4px; }
-  .day-title { font-family: 'Bebas Neue', sans-serif; font-size: 36px; line-height: 1; color: var(--white); }
-  .day-focus { font-size: 11px; color: rgba(245,240,232,0.5); margin-top: 4px; text-transform: uppercase; letter-spacing: 1.5px; }
+  .day-badge { font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 3px; color: var(--accent); margin-bottom: 3px; }
+  .day-title { font-family: 'Bebas Neue', sans-serif; font-size: 30px; line-height: 1; color: var(--white); }
+  .day-focus { font-size: 11px; color: rgba(245,240,232,0.5); margin-top: 3px; text-transform: uppercase; letter-spacing: 1.5px; }
 
   /* EXERCISE LIST */
-  .exercises-list { flex: 1; overflow-y: auto; padding: 10px 16px 80px; -webkit-overflow-scrolling: touch; }
+  .exercises-list { flex: 1; overflow-y: auto; padding: 6px 14px 90px; -webkit-overflow-scrolling: touch; }
   .exercises-list::-webkit-scrollbar { display: none; }
-  .exercise-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #1c1c1c; }
+  .exercise-row { display: flex; align-items: center; gap: 11px; padding: 8px 0; border-bottom: 1px solid #1c1c1c; }
   .exercise-row:last-child { border-bottom: none; }
 
+  /* VIDEO THUMBNAIL — 100×100 */
   .ex-thumb {
-    width: 56px; height: 56px; border-radius: 10px; overflow: hidden;
-    flex-shrink: 0; background: #1a1a1a; border: 1px solid #2a2a2a;
+    width: 100px; height: 100px; border-radius: 12px; overflow: hidden; flex-shrink: 0;
+    background: #1a1a1a; border: 1px solid #2a2a2a; position: relative; cursor: pointer;
   }
-  .ex-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+  .ex-thumb img, .ex-thumb video {
+    width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block;
+  }
+  /* Expand icon overlay */
+  .ex-thumb .expand-icon {
+    position: absolute; bottom: 5px; right: 5px;
+    background: rgba(0,0,0,0.65); border-radius: 6px;
+    width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;
+    pointer-events: none;
+  }
+  .ex-thumb .expand-icon svg { width: 12px; height: 12px; fill: none; stroke: var(--accent); stroke-width: 2.5; }
+  .thumb-loader {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: #1a1a1a;
+  }
+  .spinner { width: 18px; height: 18px; border: 2px solid #333; border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
-  .ex-num { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--accent); min-width: 22px; line-height: 1; text-align: center; }
+  .new-badge {
+    display: inline-block; margin-left: 6px; background: var(--accent); color: #000;
+    font-size: 9px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 1px;
+    padding: 1px 5px; border-radius: 4px; vertical-align: middle; line-height: 14px;
+  }
+
+  .ex-num { font-family: 'Bebas Neue', sans-serif; font-size: 17px; color: var(--accent); min-width: 20px; line-height: 1; text-align: center; }
   .ex-info { flex: 1; min-width: 0; }
-  .ex-name { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ex-name { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
   .ex-why { font-size: 11px; color: var(--muted); line-height: 1.3; }
   .ex-tag {
     background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 20px;
-    padding: 4px 9px; font-size: 11px; font-family: 'Bebas Neue', sans-serif;
+    padding: 5px 10px; font-size: 11px; font-family: 'Bebas Neue', sans-serif;
     letter-spacing: 1px; color: var(--accent); white-space: nowrap; flex-shrink: 0;
   }
 
@@ -81,7 +117,7 @@
   .rules-header { background: var(--accent); padding: 52px 24px 22px; flex-shrink: 0; }
   .rules-eyebrow { font-size: 11px; letter-spacing: 3px; color: rgba(0,0,0,0.5); text-transform: uppercase; margin-bottom: 6px; }
   .rules-title { font-family: 'Bebas Neue', sans-serif; font-size: 50px; color: var(--black); line-height: 0.9; }
-  .rules-body { flex: 1; padding: 20px 20px 80px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .rules-body { flex: 1; padding: 20px 20px 90px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .rules-body::-webkit-scrollbar { display: none; }
   .rule-item { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid #1a1a1a; align-items: flex-start; }
   .rule-item:last-child { border-bottom: none; }
@@ -89,20 +125,95 @@
   .rule-label { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 3px; }
   .rule-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
 
-  /* DOTS */
-  .nav-dots {
-    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-    display: flex; gap: 6px; z-index: 100;
-    background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    padding: 8px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08);
+  /* ── BIGGER NAV DOTS + ARROWS ── */
+  .nav-bar {
+    position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 10px; z-index: 100;
+    background: rgba(0,0,0,0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    padding: 10px 14px; border-radius: 28px; border: 1px solid rgba(255,255,255,0.1);
   }
-  .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: all 0.3s ease; cursor: pointer; }
-  .dot.active { background: var(--accent); width: 20px; border-radius: 3px; }
+  .nav-arrow {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: #1e1e1e; border: 1px solid #333;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    transition: background 0.2s, border-color 0.2s; flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .nav-arrow:active { background: var(--accent); border-color: var(--accent); }
+  .nav-arrow svg { width: 16px; height: 16px; fill: none; stroke: var(--white); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+  .nav-arrow:active svg { stroke: #000; }
+  .nav-dots-inner { display: flex; gap: 7px; align-items: center; }
+  .dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: rgba(255,255,255,0.2); transition: all 0.3s ease; cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .dot.active { background: var(--accent); width: 24px; border-radius: 5px; }
+
+  /* ── FULLSCREEN MODAL ── */
+  #modal {
+    position: fixed; inset: 0; z-index: 500;
+    background: rgba(0,0,0,0.95);
+    display: none; flex-direction: column; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  #modal.open { display: flex; }
+  .modal-inner {
+    width: 100%; max-width: 420px;
+    background: #111; border-radius: 20px; overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.8);
+    display: flex; flex-direction: column;
+  }
+  .modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 18px 12px; border-bottom: 1px solid #222;
+  }
+  .modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--white); letter-spacing: 1px; }
+  .modal-close {
+    width: 34px; height: 34px; border-radius: 50%; background: #222; border: none;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .modal-close svg { width: 14px; height: 14px; fill: none; stroke: var(--white); stroke-width: 2.5; stroke-linecap: round; }
+  .modal-media {
+    width: 100%; aspect-ratio: 1/1; background: #000; position: relative; overflow: hidden;
+  }
+  .modal-media img, .modal-media video {
+    width: 100%; height: 100%; object-fit: contain; background: #000;
+  }
+  .modal-info { padding: 14px 18px 18px; }
+  .modal-sets { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--accent); margin-bottom: 4px; }
+  .modal-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
 </style>
 </head>
 <body>
 
-<div class="carousel" id="carousel">
+<!-- Loading -->
+<div id="loading-screen">
+  <div class="loading-title">Loading Workouts</div>
+  <div class="loading-bar-wrap"><div class="loading-bar" id="loading-bar"></div></div>
+  <div class="loading-status" id="loading-status">Fetching exercises…</div>
+</div>
+
+<!-- Fullscreen modal -->
+<div id="modal">
+  <div class="modal-inner">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">Exercise</div>
+      <button class="modal-close" id="modal-close-btn">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-media" id="modal-media"></div>
+    <div class="modal-info">
+      <div class="modal-sets" id="modal-sets"></div>
+      <div class="modal-desc" id="modal-desc"></div>
+    </div>
+  </div>
+</div>
+
+<!-- App -->
+<div class="carousel" id="carousel" style="opacity:0;transition:opacity 0.4s ease;">
 
   <!-- HERO -->
   <div class="slide slide-hero">
@@ -120,218 +231,199 @@
     </div>
   </div>
 
-  <!-- DAY 1: Glutes + Quads -->
+  <!-- DAY 1 — 5 exercises -->
   <div class="slide slide-day">
     <div class="day-hero">
-      <img src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=600&q=80" alt="Lower body">
+      <img class="day-hero-bg" src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=600&q=80" alt="">
       <div class="day-hero-overlay">
         <div class="day-badge">Day 01 · Lower Body</div>
-        <div class="day-title">Glutes<br>& Quads</div>
-        <div class="day-focus">4 exercises · Power focus</div>
+        <div class="day-title">Glutes & Quads</div>
+        <div class="day-focus">5 exercises · Power focus</div>
       </div>
     </div>
     <div class="exercises-list">
-
       <div class="exercise-row">
         <div class="ex-num">01</div>
-        <div class="ex-thumb"><img src="https://images.unsplash.com/photo-1593079831268-3381b0db4a77?w=200&h=200&fit=crop&crop=center" alt="Hip Thrust"></div>
+        <div class="ex-thumb" id="thumb-hip-thrust" data-name="Hip Thrust" data-sets="4×8" data-why="Best glute strength builder"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
         <div class="ex-info"><div class="ex-name">Hip Thrust</div><div class="ex-why">Best glute strength builder</div></div>
         <div class="ex-tag">4×8</div>
       </div>
-
       <div class="exercise-row">
         <div class="ex-num">02</div>
-        <div class="ex-thumb"><img src="https://images.unsplash.com/photo-1566241142559-40e1dab266c6?w=120&h=120&fit=crop&crop=top" alt="Squat"></div>
-        <div class="ex-info"><div class="ex-name">Squat</div><div class="ex-why">Full lower body power</div></div>
+        <div class="ex-thumb" id="thumb-barbell-squat" data-name="Barbell Squat" data-sets="3×6–8" data-why="Full lower body power"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
+        <div class="ex-info"><div class="ex-name">Barbell Squat</div><div class="ex-why">Full lower body power</div></div>
         <div class="ex-tag">3×6–8</div>
       </div>
-
       <div class="exercise-row">
         <div class="ex-num">03</div>
-        <div class="ex-thumb"><img src="https://images.unsplash.com/photo-1597452485669-2c7bb5fef90d?w=120&h=120&fit=crop&crop=center" alt="Split Squat"></div>
+        <div class="ex-thumb" id="thumb-leg-press" data-name="Leg Press" data-sets="3×10" data-why="Quad overload, joint-friendly"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
+        <div class="ex-info"><div class="ex-name">Leg Press <span class="new-badge">NEW</span></div><div class="ex-why">Quad overload, joint-friendly</div></div>
+        <div class="ex-tag">3×10</div>
+      </div>
+      <div class="exercise-row">
+        <div class="ex-num">04</div>
+        <div class="ex-thumb" id="thumb-bulgarian" data-name="Bulgarian Split Squat" data-sets="3×8/leg" data-why="Balance + shape"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
         <div class="ex-info"><div class="ex-name">Bulgarian Split Squat</div><div class="ex-why">Balance + shape</div></div>
         <div class="ex-tag">3×8/leg</div>
       </div>
-
       <div class="exercise-row">
-        <div class="ex-num">04</div>
-        <div class="ex-thumb"><img src="https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?w=120&h=120&fit=crop&crop=center" alt="Calf Raise"></div>
-        <div class="ex-info"><div class="ex-name">Standing Calf Raise</div><div class="ex-why">Lower leg strength</div></div>
+        <div class="ex-num">05</div>
+        <div class="ex-thumb" id="thumb-calf-raise" data-name="Calf Raises" data-sets="3×12–15" data-why="Lower leg strength"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
+        <div class="ex-info"><div class="ex-name">Calf Raises</div><div class="ex-why">Lower leg strength</div></div>
         <div class="ex-tag">3×12–15</div>
       </div>
-
     </div>
   </div>
 
-  <!-- DAY 2: Push -->
+  <!-- DAY 2 — Push -->
   <div class="slide slide-day">
     <div class="day-hero">
-      <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80" alt="Push day">
+      <img class="day-hero-bg" src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80" alt="">
       <div class="day-hero-overlay">
         <div class="day-badge">Day 02 · Upper Body</div>
-        <div class="day-title">Push<br>Day</div>
+        <div class="day-title">Push Day</div>
         <div class="day-focus">4 exercises · Chest & Shoulders</div>
       </div>
     </div>
     <div class="exercises-list">
-
       <div class="exercise-row">
         <div class="ex-num">01</div>
-        <div class="ex-thumb"><img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=120&h=120&fit=crop&crop=center" alt="DB Bench Press"></div>
+        <div class="ex-thumb" id="thumb-db-bench" data-name="DB Bench Press" data-sets="4×8" data-why="Upper body strength"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
         <div class="ex-info"><div class="ex-name">DB Bench Press</div><div class="ex-why">Upper body strength</div></div>
         <div class="ex-tag">4×8</div>
       </div>
-
       <div class="exercise-row">
         <div class="ex-num">02</div>
-        <div class="ex-thumb"><img src="https://images.unsplash.com/photo-1532029837206-abbe2b7620e3?w=120&h=120&fit=crop&crop=top" alt="Shoulder Press"></div>
+        <div class="ex-thumb" id="thumb-shoulder-press" data-name="Shoulder Press" data-sets="3×8" data-why="Shoulder size & power"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
         <div class="ex-info"><div class="ex-name">Shoulder Press</div><div class="ex-why">Shoulder size & power</div></div>
         <div class="ex-tag">3×8</div>
       </div>
-
       <div class="exercise-row">
         <div class="ex-num">03</div>
-        <div class="ex-thumb"><img src="https://images.unsplash.com/photo-1605296867424-35fc25c9212a?w=120&h=120&fit=crop&crop=center" alt="Lateral Raise"></div>
+        <div class="ex-thumb" id="thumb-lateral-raise" data-name="Lateral Raise" data-sets="3×12" data-why="Shoulder definition"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
         <div class="ex-info"><div class="ex-name">Lateral Raise</div><div class="ex-why">Shoulder definition</div></div>
         <div class="ex-tag">3×12</div>
       </div>
-
       <div class="exercise-row">
         <div class="ex-num">04</div>
-        <div class="ex-thumb"><img src="https://images.unsplash.com/photo-1530822847156-5df684ec5933?w=120&h=120&fit=crop&crop=center" alt="Triceps Pushdown"></div>
+        <div class="ex-thumb" id="thumb-triceps" data-name="Triceps Pushdown" data-sets="3×12" data-why="Arm strength"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
         <div class="ex-info"><div class="ex-name">Triceps Pushdown</div><div class="ex-why">Arm strength</div></div>
         <div class="ex-tag">3×12</div>
       </div>
-
     </div>
   </div>
 
-  <!-- DAY 3: Hamstrings -->
+  <!-- DAY 3 — Hamstrings -->
   <div class="slide slide-day">
     <div class="day-hero">
-      <img src="https://images.unsplash.com/photo-1434682881908-b43d0467b798?w=600&q=80" alt="Hamstring day">
+      <img class="day-hero-bg" src="https://images.unsplash.com/photo-1434682881908-b43d0467b798?w=600&q=80" alt="">
       <div class="day-hero-overlay">
         <div class="day-badge">Day 03 · Lower Body</div>
-        <div class="day-title">Hamstring<br>Day</div>
+        <div class="day-title">Hamstring Day</div>
         <div class="day-focus">4 exercises · Posterior chain</div>
       </div>
     </div>
     <div class="exercises-list">
-
       <div class="exercise-row">
         <div class="ex-num">01</div>
-        <div class="ex-thumb"><img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=120&h=120&fit=crop&crop=center" alt="Romanian Deadlift"></div>
+        <div class="ex-thumb" id="thumb-rdl" data-name="Romanian Deadlift" data-sets="4×8" data-why="Glutes + hamstrings"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
         <div class="ex-info"><div class="ex-name">Romanian Deadlift</div><div class="ex-why">Glutes + hamstrings</div></div>
         <div class="ex-tag">4×8</div>
       </div>
-
       <div class="exercise-row">
         <div class="ex-num">02</div>
-        <div class="ex-thumb"><img src="https://images.unsplash.com/photo-1593079831268-3381b0db4a77?w=120&h=120&fit=crop&crop=center" alt="Hip Thrust"></div>
+        <div class="ex-thumb" id="thumb-hip-thrust-2" data-name="Hip Thrust" data-sets="3×10" data-why="Extra glute growth"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
         <div class="ex-info"><div class="ex-name">Hip Thrust</div><div class="ex-why">Extra glute growth</div></div>
         <div class="ex-tag">3×10</div>
       </div>
-
       <div class="exercise-row">
         <div class="ex-num">03</div>
-        <div class="ex-thumb"><img src="https://images.unsplash.com/photo-1574680178050-55c6a6a96e0a?w=120&h=120&fit=crop&crop=center" alt="Leg Curl"></div>
+        <div class="ex-thumb" id="thumb-leg-curl" data-name="Leg Curl" data-sets="3×10" data-why="Hamstring isolation"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
         <div class="ex-info"><div class="ex-name">Leg Curl</div><div class="ex-why">Hamstring isolation</div></div>
         <div class="ex-tag">3×10</div>
       </div>
-
       <div class="exercise-row">
         <div class="ex-num">04</div>
-        <div class="ex-thumb"><img src="https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?w=120&h=120&fit=crop&crop=center" alt="Seated Calf Raise"></div>
+        <div class="ex-thumb" id="thumb-seated-calf" data-name="Seated Calf Raise" data-sets="3×12–15" data-why="Deep calf muscle"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
         <div class="ex-info"><div class="ex-name">Seated Calf Raise</div><div class="ex-why">Deep calf muscle</div></div>
         <div class="ex-tag">3×12–15</div>
       </div>
-
     </div>
   </div>
 
-  <!-- DAY 4: Pull -->
+  <!-- DAY 4 — Pull -->
   <div class="slide slide-day">
     <div class="day-hero">
-      <img src="https://images.unsplash.com/photo-1598971457999-ca4ef48a9a71?w=600&q=80" alt="Pull day">
+      <img class="day-hero-bg" src="https://images.unsplash.com/photo-1598971457999-ca4ef48a9a71?w=600&q=80" alt="">
       <div class="day-hero-overlay">
         <div class="day-badge">Day 04 · Upper Body</div>
-        <div class="day-title">Pull<br>Day</div>
+        <div class="day-title">Pull Day</div>
         <div class="day-focus">4 exercises · Back & Posture</div>
       </div>
     </div>
     <div class="exercises-list">
-
       <div class="exercise-row">
         <div class="ex-num">01</div>
-        <div class="ex-thumb"><img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=120&h=120&fit=crop&crop=top" alt="Lat Pulldown"></div>
+        <div class="ex-thumb" id="thumb-lat-pulldown" data-name="Lat Pulldown" data-sets="4×8" data-why="Back width"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
         <div class="ex-info"><div class="ex-name">Lat Pulldown</div><div class="ex-why">Back width</div></div>
         <div class="ex-tag">4×8</div>
       </div>
-
       <div class="exercise-row">
         <div class="ex-num">02</div>
-        <div class="ex-thumb"><img src="https://images.unsplash.com/photo-1598971457999-ca4ef48a9a71?w=120&h=120&fit=crop&crop=center" alt="Seated Row"></div>
+        <div class="ex-thumb" id="thumb-seated-row" data-name="Seated Row" data-sets="3×10" data-why="Posture + thickness"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
         <div class="ex-info"><div class="ex-name">Seated Row</div><div class="ex-why">Posture + thickness</div></div>
         <div class="ex-tag">3×10</div>
       </div>
-
       <div class="exercise-row">
         <div class="ex-num">03</div>
-        <div class="ex-thumb"><img src="https://images.unsplash.com/photo-1584863231364-2edc166de576?w=120&h=120&fit=crop&crop=center" alt="DB Row"></div>
+        <div class="ex-thumb" id="thumb-db-row" data-name="DB Row" data-sets="3×10/side" data-why="Fix imbalances"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
         <div class="ex-info"><div class="ex-name">DB Row</div><div class="ex-why">Fix imbalances</div></div>
         <div class="ex-tag">3×10/side</div>
       </div>
-
       <div class="exercise-row">
         <div class="ex-num">04</div>
-        <div class="ex-thumb"><img src="https://images.unsplash.com/photo-1577221084712-45b0445d2b00?w=120&h=120&fit=crop&crop=top" alt="Face Pull"></div>
+        <div class="ex-thumb" id="thumb-face-pull" data-name="Face Pull" data-sets="3×12" data-why="Shoulder health"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
         <div class="ex-info"><div class="ex-name">Face Pull</div><div class="ex-why">Shoulder health</div></div>
         <div class="ex-tag">3×12</div>
       </div>
-
     </div>
   </div>
 
-  <!-- DAY 5: Strength + Core -->
+  <!-- DAY 5 — Strength + Core -->
   <div class="slide slide-day">
     <div class="day-hero">
-      <img src="https://images.unsplash.com/photo-1550977616-efc580084ac5?w=600&q=80" alt="Deadlift day">
+      <img class="day-hero-bg" src="https://images.unsplash.com/photo-1550977616-efc580084ac5?w=600&q=80" alt="">
       <div class="day-hero-overlay">
         <div class="day-badge">Day 05 · Full Body</div>
-        <div class="day-title">Strength<br>& Core</div>
+        <div class="day-title">Strength & Core</div>
         <div class="day-focus">4 exercises · Total power</div>
       </div>
     </div>
     <div class="exercises-list">
-
       <div class="exercise-row">
         <div class="ex-num">01</div>
-        <div class="ex-thumb"><img src="https://images.unsplash.com/photo-1561214115-f2f134cc4912?w=120&h=120&fit=crop&crop=center" alt="Deadlift"></div>
+        <div class="ex-thumb" id="thumb-deadlift" data-name="Deadlift" data-sets="4×5" data-why="Full body strength"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
         <div class="ex-info"><div class="ex-name">Deadlift</div><div class="ex-why">Full body strength</div></div>
         <div class="ex-tag">4×5</div>
       </div>
-
       <div class="exercise-row">
         <div class="ex-num">02</div>
-        <div class="ex-thumb"><img src="https://images.unsplash.com/photo-1566241142559-40e1dab266c6?w=120&h=120&fit=crop&crop=top" alt="Goblet Squat"></div>
+        <div class="ex-thumb" id="thumb-goblet" data-name="Goblet Squat" data-sets="3×12" data-why="Control & mobility"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
         <div class="ex-info"><div class="ex-name">Goblet Squat</div><div class="ex-why">Control & mobility</div></div>
         <div class="ex-tag">3×12</div>
       </div>
-
       <div class="exercise-row">
         <div class="ex-num">03</div>
-        <div class="ex-thumb"><img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=120&h=120&fit=crop&crop=center" alt="Plank"></div>
+        <div class="ex-thumb" id="thumb-plank" data-name="Plank" data-sets="40s" data-why="Core stability"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
         <div class="ex-info"><div class="ex-name">Plank</div><div class="ex-why">Core stability</div></div>
         <div class="ex-tag">40s</div>
       </div>
-
       <div class="exercise-row">
         <div class="ex-num">04</div>
-        <div class="ex-thumb"><img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=120&h=120&fit=crop&crop=center" alt="Dead Bug"></div>
+        <div class="ex-thumb" id="thumb-deadbug" data-name="Dead Bug" data-sets="10/side" data-why="Core control"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
         <div class="ex-info"><div class="ex-name">Dead Bug</div><div class="ex-why">Core control</div></div>
         <div class="ex-tag">10/side</div>
       </div>
-
     </div>
   </div>
 
@@ -342,70 +434,228 @@
       <div class="rules-title">Stay<br>Consistent</div>
     </div>
     <div class="rules-body">
-      <div class="rule-item">
-        <div class="rule-icon">⏱</div>
-        <div class="rule-text"><div class="rule-label">45–60 Min Sessions</div><div class="rule-desc">Efficient and focused. No scrolling between sets.</div></div>
-      </div>
-      <div class="rule-item">
-        <div class="rule-icon">😮‍💨</div>
-        <div class="rule-text"><div class="rule-label">Rest 60–90 Seconds</div><div class="rule-desc">Enough to recover, not enough to cool down.</div></div>
-      </div>
-      <div class="rule-item">
-        <div class="rule-icon">📈</div>
-        <div class="rule-text"><div class="rule-label">Progress Weekly</div><div class="rule-desc">Add weight or reps every week. This is how you grow.</div></div>
-      </div>
-      <div class="rule-item">
-        <div class="rule-icon">🎯</div>
-        <div class="rule-text"><div class="rule-label">Form Over Ego</div><div class="rule-desc">Move well before you move heavy. Every time.</div></div>
-      </div>
-      <div class="rule-item">
-        <div class="rule-icon">🔥</div>
-        <div class="rule-text"><div class="rule-label">Consistency is Everything</div><div class="rule-desc">The best workout is the one you actually show up for.</div></div>
-      </div>
+      <div class="rule-item"><div class="rule-icon">⏱</div><div class="rule-text"><div class="rule-label">45–60 Min Sessions</div><div class="rule-desc">Efficient and focused. No scrolling between sets.</div></div></div>
+      <div class="rule-item"><div class="rule-icon">😮‍💨</div><div class="rule-text"><div class="rule-label">Rest 60–90 Seconds</div><div class="rule-desc">Enough to recover, not enough to cool down.</div></div></div>
+      <div class="rule-item"><div class="rule-icon">📈</div><div class="rule-text"><div class="rule-label">Progress Weekly</div><div class="rule-desc">Add weight or reps every week. This is how you grow.</div></div></div>
+      <div class="rule-item"><div class="rule-icon">🎯</div><div class="rule-text"><div class="rule-label">Form Over Ego</div><div class="rule-desc">Move well before you move heavy. Every time.</div></div></div>
+      <div class="rule-item"><div class="rule-icon">🔥</div><div class="rule-text"><div class="rule-label">Consistency is Everything</div><div class="rule-desc">The best workout is the one you actually show up for.</div></div></div>
     </div>
   </div>
 
+</div><!-- /carousel -->
+
+<!-- Nav bar: arrows + bigger dots -->
+<div class="nav-bar" id="nav-bar">
+  <div class="nav-arrow" id="nav-prev">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+  </div>
+  <div class="nav-dots-inner" id="dots"></div>
+  <div class="nav-arrow" id="nav-next">
+    <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+  </div>
 </div>
 
-<div class="nav-dots" id="dots"></div>
-
 <script>
-  const carousel = document.getElementById('carousel');
-  const dotsContainer = document.getElementById('dots');
-  const totalSlides = carousel.children.length;
-  let current = 0, startX = 0, isDragging = false, dragDelta = 0;
+// ── EXERCISE DATA ──
+const EXERCISES = {
+  'thumb-hip-thrust':    { query: 'barbell hip thrust',      fallback: 'https://images.unsplash.com/photo-1616803689943-5601631c7fec?w=300&h=300&fit=crop' },
+  'thumb-barbell-squat': { query: 'barbell squat',           fallback: 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=300&h=300&fit=crop' },
+  'thumb-leg-press':     { query: 'leg press',               fallback: 'https://images.unsplash.com/photo-1574680178050-55c6a6a96e0a?w=300&h=300&fit=crop' },
+  'thumb-bulgarian':     { query: 'bulgarian split squat',   fallback: 'https://images.unsplash.com/photo-1577221084712-45b0445d2b00?w=300&h=300&fit=crop' },
+  'thumb-calf-raise':    { query: 'standing calf raise',     fallback: 'https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?w=300&h=300&fit=crop' },
+  'thumb-db-bench':      { query: 'dumbbell bench press',    fallback: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=300&h=300&fit=crop' },
+  'thumb-shoulder-press':{ query: 'dumbbell shoulder press', fallback: 'https://images.unsplash.com/photo-1532029837206-abbe2b7620e3?w=300&h=300&fit=crop' },
+  'thumb-lateral-raise': { query: 'dumbbell lateral raise',  fallback: 'https://images.unsplash.com/photo-1648737963540-306235c4eb78?w=300&h=300&fit=crop' },
+  'thumb-triceps':       { query: 'triceps pushdown',        fallback: 'https://images.unsplash.com/photo-1530822847156-5df684ec5933?w=300&h=300&fit=crop' },
+  'thumb-rdl':           { query: 'romanian deadlift',       fallback: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=300&h=300&fit=crop' },
+  'thumb-hip-thrust-2':  { query: 'barbell hip thrust',      fallback: 'https://images.unsplash.com/photo-1616803689943-5601631c7fec?w=300&h=300&fit=crop' },
+  'thumb-leg-curl':      { query: 'lying leg curl',          fallback: 'https://images.unsplash.com/photo-1574680178050-55c6a6a96e0a?w=300&h=300&fit=crop' },
+  'thumb-seated-calf':   { query: 'seated calf raise',       fallback: 'https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?w=300&h=300&fit=crop' },
+  'thumb-lat-pulldown':  { query: 'lat pulldown',            fallback: 'https://images.unsplash.com/photo-1603287681836-b174ce5074c2?w=300&h=300&fit=crop' },
+  'thumb-seated-row':    { query: 'seated cable row',        fallback: 'https://images.unsplash.com/photo-1598971457999-ca4ef48a9a71?w=300&h=300&fit=crop' },
+  'thumb-db-row':        { query: 'dumbbell row',            fallback: 'https://images.unsplash.com/photo-1584863231364-2edc166de576?w=300&h=300&fit=crop' },
+  'thumb-face-pull':     { query: 'cable face pull',         fallback: 'https://images.unsplash.com/photo-1583454155184-870a1f63be9e?w=300&h=300&fit=crop' },
+  'thumb-deadlift':      { query: 'barbell deadlift',        fallback: 'https://images.unsplash.com/photo-1561214115-f2f134cc4912?w=300&h=300&fit=crop' },
+  'thumb-goblet':        { query: 'goblet squat',            fallback: 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=300&h=300&fit=crop' },
+  'thumb-plank':         { query: 'plank',                   fallback: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=300&fit=crop' },
+  'thumb-deadbug':       { query: 'dead bug',                fallback: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=300&h=300&fit=crop' },
+};
 
-  for (let i = 0; i < totalSlides; i++) {
-    const d = document.createElement('div');
-    d.className = 'dot' + (i === 0 ? ' active' : '');
-    d.addEventListener('click', () => goTo(i));
-    dotsContainer.appendChild(d);
+// Store gifUrl per exercise for modal
+const gifCache = {};
+
+const BASE = 'https://exercisedb.dev/api/v2/exercises/name/';
+
+async function fetchExerciseData(query, fallback) {
+  try {
+    const res = await fetch(`${BASE}${encodeURIComponent(query.toLowerCase())}?limit=1&offset=0`, { signal: AbortSignal.timeout(7000) });
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    const list = Array.isArray(data) ? data : (data.exercises || data.data || []);
+    if (list.length > 0 && list[0].gifUrl) return list[0].gifUrl;
+    throw new Error();
+  } catch {
+    return fallback;
+  }
+}
+
+function buildThumb(id, gifUrl) {
+  const container = document.getElementById(id);
+  if (!container) return;
+  gifCache[id] = gifUrl;
+  const isGif = gifUrl.includes('.gif') || gifUrl.includes('exercisedb') || gifUrl.includes('inspireusa');
+
+  // Create element
+  let media;
+  if (isGif) {
+    // Use img for GIF (animated)
+    media = document.createElement('img');
+    media.src = gifUrl;
+    media.alt = id;
+  } else {
+    // Fallback: static image
+    media = document.createElement('img');
+    media.src = gifUrl;
+    media.alt = id;
   }
 
-  function goTo(idx) {
-    current = Math.max(0, Math.min(totalSlides - 1, idx));
-    carousel.style.transform = `translateX(-${current * 100}%)`;
-    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+  // Replace loader, keep expand icon
+  const loader = container.querySelector('.thumb-loader');
+  if (loader) loader.remove();
+  const expand = container.querySelector('.expand-icon');
+  container.insertBefore(media, expand);
+}
+
+async function loadAllImages() {
+  const ids = Object.keys(EXERCISES);
+  const loadingBar = document.getElementById('loading-bar');
+  const loadingStatus = document.getElementById('loading-status');
+  let done = 0;
+
+  const CONCURRENCY = 4;
+  const queue = [...ids];
+
+  async function worker() {
+    while (queue.length > 0) {
+      const id = queue.shift();
+      const { query, fallback } = EXERCISES[id];
+      const url = await fetchExerciseData(query, fallback);
+      buildThumb(id, url);
+      done++;
+      loadingBar.style.width = Math.round((done / ids.length) * 100) + '%';
+      loadingStatus.textContent = `Loading ${done} of ${ids.length}…`;
+    }
   }
 
-  carousel.addEventListener('touchstart', e => { startX = e.touches[0].clientX; isDragging = true; carousel.style.transition = 'none'; }, { passive: true });
-  carousel.addEventListener('touchmove', e => {
-    if (!isDragging) return;
-    dragDelta = e.touches[0].clientX - startX;
-    carousel.style.transform = `translateX(${-(current * 100) + (dragDelta / window.innerWidth * 100)}%)`;
-  }, { passive: true });
-  carousel.addEventListener('touchend', () => {
-    isDragging = false;
-    carousel.style.transition = 'transform 0.45s cubic-bezier(0.77,0,0.18,1)';
-    if (dragDelta < -50) goTo(current + 1);
-    else if (dragDelta > 50) goTo(current - 1);
-    else goTo(current);
-    dragDelta = 0;
-  });
-  document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight') goTo(current + 1);
-    if (e.key === 'ArrowLeft') goTo(current - 1);
-  });
+  await Promise.all(Array.from({ length: CONCURRENCY }, worker));
+
+  loadingStatus.textContent = 'Ready!';
+  setTimeout(() => {
+    document.getElementById('loading-screen').style.display = 'none';
+    document.getElementById('carousel').style.opacity = '1';
+  }, 300);
+}
+
+// ── MODAL ──
+const modal = document.getElementById('modal');
+const modalTitle = document.getElementById('modal-title');
+const modalMedia = document.getElementById('modal-media');
+const modalSets = document.getElementById('modal-sets');
+const modalDesc = document.getElementById('modal-desc');
+
+function openModal(thumbEl) {
+  const id = thumbEl.id;
+  const name = thumbEl.dataset.name || 'Exercise';
+  const sets = thumbEl.dataset.sets || '';
+  const why = thumbEl.dataset.why || '';
+  const gifUrl = gifCache[id] || EXERCISES[id]?.fallback || '';
+
+  modalTitle.textContent = name;
+  modalSets.textContent = sets;
+  modalDesc.textContent = why;
+  modalMedia.innerHTML = '';
+
+  const isAnimated = gifUrl.includes('.gif') || gifUrl.includes('exercisedb');
+  if (isAnimated) {
+    const img = document.createElement('img');
+    img.src = gifUrl;
+    img.alt = name;
+    modalMedia.appendChild(img);
+  } else {
+    const img = document.createElement('img');
+    img.src = gifUrl;
+    img.alt = name;
+    modalMedia.appendChild(img);
+  }
+
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  modal.classList.remove('open');
+  modalMedia.innerHTML = '';
+}
+
+document.getElementById('modal-close-btn').addEventListener('click', closeModal);
+modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+
+// Attach click to all thumbs
+document.querySelectorAll('.ex-thumb').forEach(thumb => {
+  thumb.addEventListener('click', () => openModal(thumb));
+});
+
+// ── CAROUSEL ──
+const carousel = document.getElementById('carousel');
+const dotsContainer = document.getElementById('dots');
+const totalSlides = carousel.children.length;
+let current = 0, startX = 0, isDragging = false, dragDelta = 0;
+
+for (let i = 0; i < totalSlides; i++) {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.addEventListener('click', () => goTo(i));
+  dotsContainer.appendChild(d);
+}
+
+function goTo(idx) {
+  current = Math.max(0, Math.min(totalSlides - 1, idx));
+  carousel.style.transform = `translateX(-${current * 100}%)`;
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+}
+
+document.getElementById('nav-prev').addEventListener('click', () => goTo(current - 1));
+document.getElementById('nav-next').addEventListener('click', () => goTo(current + 1));
+
+carousel.addEventListener('touchstart', e => {
+  if (modal.classList.contains('open')) return;
+  startX = e.touches[0].clientX; isDragging = true; carousel.style.transition = 'none';
+}, { passive: true });
+
+carousel.addEventListener('touchmove', e => {
+  if (!isDragging || modal.classList.contains('open')) return;
+  dragDelta = e.touches[0].clientX - startX;
+  carousel.style.transform = `translateX(${-(current * 100) + (dragDelta / window.innerWidth * 100)}%)`;
+}, { passive: true });
+
+carousel.addEventListener('touchend', () => {
+  if (!isDragging) return;
+  isDragging = false;
+  carousel.style.transition = 'transform 0.45s cubic-bezier(0.77,0,0.18,1)';
+  if (dragDelta < -50) goTo(current + 1);
+  else if (dragDelta > 50) goTo(current - 1);
+  else goTo(current);
+  dragDelta = 0;
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+  if (modal.classList.contains('open')) return;
+  if (e.key === 'ArrowRight') goTo(current + 1);
+  if (e.key === 'ArrowLeft') goTo(current - 1);
+});
+
+loadAllImages();
 </script>
 </body>
 </html>
