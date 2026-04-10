@@ -16,17 +16,6 @@
     color: var(--white); touch-action: none;
   }
 
-  /* ── LOADING ── */
-  #loading-screen {
-    position: fixed; inset: 0; background: var(--black);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    z-index: 999; gap: 20px;
-  }
-  .loading-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--white); letter-spacing: 3px; }
-  .loading-bar-wrap { width: 200px; height: 3px; background: #222; border-radius: 2px; overflow: hidden; }
-  .loading-bar { height: 100%; background: var(--accent); border-radius: 2px; width: 0%; transition: width 0.3s ease; }
-  .loading-status { font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
-
   /* ── CAROUSEL ── */
   .carousel {
     width: 100%; height: 100%; display: flex;
@@ -50,13 +39,13 @@
     animation: pulse 2s infinite; white-space: nowrap;
   }
   @keyframes pulse {
-    0%,100% { opacity:0.5; transform: translateX(-50%) translateX(0); }
-    50% { opacity:1; transform: translateX(-50%) translateX(6px); }
+    0%,100% { opacity:0.5; transform:translateX(-50%) translateX(0); }
+    50% { opacity:1; transform:translateX(-50%) translateX(6px); }
   }
 
   /* DAY SLIDES */
   .slide-day { background: var(--black); }
-  .day-hero { position: relative; height: 175px; overflow: hidden; flex-shrink: 0; }
+  .day-hero { position: relative; height: 165px; overflow: hidden; flex-shrink: 0; }
   .day-hero-bg { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; filter: brightness(0.5) saturate(1.1); }
   .day-hero-overlay {
     position: absolute; inset: 0;
@@ -70,41 +59,42 @@
   /* EXERCISE LIST */
   .exercises-list { flex: 1; overflow-y: auto; padding: 6px 14px 90px; -webkit-overflow-scrolling: touch; }
   .exercises-list::-webkit-scrollbar { display: none; }
-  .exercise-row { display: flex; align-items: center; gap: 11px; padding: 8px 0; border-bottom: 1px solid #1c1c1c; }
+  .exercise-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid #1c1c1c; }
   .exercise-row:last-child { border-bottom: none; }
 
-  /* VIDEO THUMBNAIL — 100×100 */
+  /* GIF THUMBNAIL — 96px */
   .ex-thumb {
-    width: 100px; height: 100px; border-radius: 12px; overflow: hidden; flex-shrink: 0;
+    width: 96px; height: 96px; border-radius: 12px; overflow: hidden; flex-shrink: 0;
     background: #1a1a1a; border: 1px solid #2a2a2a; position: relative; cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
   }
-  .ex-thumb img, .ex-thumb video {
-    width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block;
+  .ex-thumb img {
+    width: 100%; height: 100%; object-fit: cover; object-position: center top;
+    display: block; transition: opacity 0.3s;
   }
-  /* Expand icon overlay */
-  .ex-thumb .expand-icon {
+  .ex-thumb .expand-btn {
     position: absolute; bottom: 5px; right: 5px;
-    background: rgba(0,0,0,0.65); border-radius: 6px;
-    width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.7); border-radius: 6px;
+    width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
     pointer-events: none;
   }
-  .ex-thumb .expand-icon svg { width: 12px; height: 12px; fill: none; stroke: var(--accent); stroke-width: 2.5; }
-  .thumb-loader {
-    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-    background: #1a1a1a;
+  .ex-thumb .expand-btn svg { width: 12px; height: 12px; }
+  .ex-thumb .gif-label {
+    position: absolute; top: 5px; left: 5px;
+    background: var(--accent); color: #000;
+    font-family: 'Bebas Neue', sans-serif; font-size: 9px; letter-spacing: 1px;
+    padding: 1px 4px; border-radius: 4px; pointer-events: none;
   }
-  .spinner { width: 18px; height: 18px; border: 2px solid #333; border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
 
   .new-badge {
-    display: inline-block; margin-left: 6px; background: var(--accent); color: #000;
+    display: inline-block; margin-left: 5px; background: var(--accent); color: #000;
     font-size: 9px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 1px;
     padding: 1px 5px; border-radius: 4px; vertical-align: middle; line-height: 14px;
   }
 
   .ex-num { font-family: 'Bebas Neue', sans-serif; font-size: 17px; color: var(--accent); min-width: 20px; line-height: 1; text-align: center; }
   .ex-info { flex: 1; min-width: 0; }
-  .ex-name { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
+  .ex-name { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 3px; line-height: 1.3; }
   .ex-why { font-size: 11px; color: var(--muted); line-height: 1.3; }
   .ex-tag {
     background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 20px;
@@ -125,86 +115,94 @@
   .rule-label { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 3px; }
   .rule-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
 
-  /* ── BIGGER NAV DOTS + ARROWS ── */
+  /* ── NAV BAR — bigger ── */
   .nav-bar {
     position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
-    display: flex; align-items: center; gap: 10px; z-index: 100;
-    background: rgba(0,0,0,0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-    padding: 10px 14px; border-radius: 28px; border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; gap: 12px; z-index: 100;
+    background: rgba(0,0,0,0.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    padding: 10px 16px; border-radius: 32px; border: 1px solid rgba(255,255,255,0.1);
   }
   .nav-arrow {
-    width: 36px; height: 36px; border-radius: 50%;
-    background: #1e1e1e; border: 1px solid #333;
+    width: 40px; height: 40px; border-radius: 50%;
+    background: #222; border: 1px solid #333;
     display: flex; align-items: center; justify-content: center; cursor: pointer;
-    transition: background 0.2s, border-color 0.2s; flex-shrink: 0;
+    transition: background 0.15s, transform 0.1s; flex-shrink: 0;
     -webkit-tap-highlight-color: transparent;
   }
-  .nav-arrow:active { background: var(--accent); border-color: var(--accent); }
-  .nav-arrow svg { width: 16px; height: 16px; fill: none; stroke: var(--white); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+  .nav-arrow:active { background: var(--accent); transform: scale(0.93); }
   .nav-arrow:active svg { stroke: #000; }
-  .nav-dots-inner { display: flex; gap: 7px; align-items: center; }
+  .nav-arrow svg { width: 18px; height: 18px; fill: none; stroke: var(--white); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+  .nav-dots-inner { display: flex; gap: 8px; align-items: center; }
   .dot {
-    width: 9px; height: 9px; border-radius: 50%;
+    width: 10px; height: 10px; border-radius: 50%;
     background: rgba(255,255,255,0.2); transition: all 0.3s ease; cursor: pointer;
     -webkit-tap-highlight-color: transparent;
   }
-  .dot.active { background: var(--accent); width: 24px; border-radius: 5px; }
+  .dot.active { background: var(--accent); width: 26px; border-radius: 5px; }
 
   /* ── FULLSCREEN MODAL ── */
   #modal {
     position: fixed; inset: 0; z-index: 500;
-    background: rgba(0,0,0,0.95);
+    background: rgba(0,0,0,0.96);
     display: none; flex-direction: column; align-items: center; justify-content: center;
-    padding: 20px;
+    padding: 16px;
   }
   #modal.open { display: flex; }
   .modal-inner {
-    width: 100%; max-width: 420px;
-    background: #111; border-radius: 20px; overflow: hidden;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.8);
+    width: 100%; max-width: 440px;
+    background: #111; border-radius: 24px; overflow: hidden;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.9);
     display: flex; flex-direction: column;
   }
   .modal-header {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 18px 12px; border-bottom: 1px solid #222;
+    padding: 18px 20px 14px; border-bottom: 1px solid #1e1e1e; flex-shrink: 0;
   }
-  .modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--white); letter-spacing: 1px; }
+  .modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--white); letter-spacing: 1px; }
   .modal-close {
-    width: 34px; height: 34px; border-radius: 50%; background: #222; border: none;
+    width: 36px; height: 36px; border-radius: 50%; background: #222; border: none;
     display: flex; align-items: center; justify-content: center; cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: transparent; flex-shrink: 0;
   }
   .modal-close svg { width: 14px; height: 14px; fill: none; stroke: var(--white); stroke-width: 2.5; stroke-linecap: round; }
+  /* Square GIF area */
   .modal-media {
-    width: 100%; aspect-ratio: 1/1; background: #000; position: relative; overflow: hidden;
+    width: 100%; aspect-ratio: 1/1; background: #000;
+    position: relative; overflow: hidden; flex-shrink: 0;
   }
-  .modal-media img, .modal-media video {
-    width: 100%; height: 100%; object-fit: contain; background: #000;
+  .modal-media img {
+    width: 100%; height: 100%; object-fit: contain; background: #000; display: block;
   }
-  .modal-info { padding: 14px 18px 18px; }
-  .modal-sets { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--accent); margin-bottom: 4px; }
+  .modal-media .media-placeholder {
+    width: 100%; height: 100%; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 12px;
+    background: #0e0e0e;
+  }
+  .modal-media .media-placeholder .big-spinner {
+    width: 40px; height: 40px; border: 3px solid #222; border-top-color: var(--accent);
+    border-radius: 50%; animation: spin 0.7s linear infinite;
+  }
+  .modal-media .media-placeholder p { font-size: 12px; color: var(--muted); }
+  .modal-info { padding: 16px 20px 20px; border-top: 1px solid #1e1e1e; flex-shrink: 0; }
+  .modal-sets { font-family: 'Bebas Neue', sans-serif; font-size: 30px; color: var(--accent); margin-bottom: 4px; letter-spacing: 1px; }
   .modal-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
 
-<!-- Loading -->
-<div id="loading-screen">
-  <div class="loading-title">Loading Workouts</div>
-  <div class="loading-bar-wrap"><div class="loading-bar" id="loading-bar"></div></div>
-  <div class="loading-status" id="loading-status">Fetching exercises…</div>
-</div>
-
-<!-- Fullscreen modal -->
+<!-- MODAL -->
 <div id="modal">
   <div class="modal-inner">
     <div class="modal-header">
       <div class="modal-title" id="modal-title">Exercise</div>
-      <button class="modal-close" id="modal-close-btn">
+      <button class="modal-close" id="modal-close-btn" aria-label="Close">
         <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
-    <div class="modal-media" id="modal-media"></div>
+    <div class="modal-media" id="modal-media">
+      <div class="media-placeholder"><div class="big-spinner"></div><p>Loading…</p></div>
+    </div>
     <div class="modal-info">
       <div class="modal-sets" id="modal-sets"></div>
       <div class="modal-desc" id="modal-desc"></div>
@@ -212,8 +210,8 @@
   </div>
 </div>
 
-<!-- App -->
-<div class="carousel" id="carousel" style="opacity:0;transition:opacity 0.4s ease;">
+<!-- APP -->
+<div class="carousel" id="carousel">
 
   <!-- HERO -->
   <div class="slide slide-hero">
@@ -231,7 +229,7 @@
     </div>
   </div>
 
-  <!-- DAY 1 — 5 exercises -->
+  <!-- DAY 1 -->
   <div class="slide slide-day">
     <div class="day-hero">
       <img class="day-hero-bg" src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=600&q=80" alt="">
@@ -241,41 +239,10 @@
         <div class="day-focus">5 exercises · Power focus</div>
       </div>
     </div>
-    <div class="exercises-list">
-      <div class="exercise-row">
-        <div class="ex-num">01</div>
-        <div class="ex-thumb" id="thumb-hip-thrust" data-name="Hip Thrust" data-sets="4×8" data-why="Best glute strength builder"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
-        <div class="ex-info"><div class="ex-name">Hip Thrust</div><div class="ex-why">Best glute strength builder</div></div>
-        <div class="ex-tag">4×8</div>
-      </div>
-      <div class="exercise-row">
-        <div class="ex-num">02</div>
-        <div class="ex-thumb" id="thumb-barbell-squat" data-name="Barbell Squat" data-sets="3×6–8" data-why="Full lower body power"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
-        <div class="ex-info"><div class="ex-name">Barbell Squat</div><div class="ex-why">Full lower body power</div></div>
-        <div class="ex-tag">3×6–8</div>
-      </div>
-      <div class="exercise-row">
-        <div class="ex-num">03</div>
-        <div class="ex-thumb" id="thumb-leg-press" data-name="Leg Press" data-sets="3×10" data-why="Quad overload, joint-friendly"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
-        <div class="ex-info"><div class="ex-name">Leg Press </div><div class="ex-why">Quad overload, joint-friendly</div></div>
-        <div class="ex-tag">3×10</div>
-      </div>
-      <div class="exercise-row">
-        <div class="ex-num">04</div>
-        <div class="ex-thumb" id="thumb-bulgarian" data-name="Bulgarian Split Squat" data-sets="3×8/leg" data-why="Balance + shape"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
-        <div class="ex-info"><div class="ex-name">Bulgarian Split Squat</div><div class="ex-why">Balance + shape</div></div>
-        <div class="ex-tag">3×8/leg</div>
-      </div>
-      <div class="exercise-row">
-        <div class="ex-num">05</div>
-        <div class="ex-thumb" id="thumb-calf-raise" data-name="Calf Raises" data-sets="3×12–15" data-why="Lower leg strength"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
-        <div class="ex-info"><div class="ex-name">Calf Raises</div><div class="ex-why">Lower leg strength</div></div>
-        <div class="ex-tag">3×12–15</div>
-      </div>
-    </div>
+    <div class="exercises-list" id="day1-list"></div>
   </div>
 
-  <!-- DAY 2 — Push -->
+  <!-- DAY 2 -->
   <div class="slide slide-day">
     <div class="day-hero">
       <img class="day-hero-bg" src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80" alt="">
@@ -285,35 +252,10 @@
         <div class="day-focus">4 exercises · Chest & Shoulders</div>
       </div>
     </div>
-    <div class="exercises-list">
-      <div class="exercise-row">
-        <div class="ex-num">01</div>
-        <div class="ex-thumb" id="thumb-db-bench" data-name="DB Bench Press" data-sets="4×8" data-why="Upper body strength"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
-        <div class="ex-info"><div class="ex-name">DB Bench Press</div><div class="ex-why">Upper body strength</div></div>
-        <div class="ex-tag">4×8</div>
-      </div>
-      <div class="exercise-row">
-        <div class="ex-num">02</div>
-        <div class="ex-thumb" id="thumb-shoulder-press" data-name="Shoulder Press" data-sets="3×8" data-why="Shoulder size & power"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
-        <div class="ex-info"><div class="ex-name">Shoulder Press</div><div class="ex-why">Shoulder size & power</div></div>
-        <div class="ex-tag">3×8</div>
-      </div>
-      <div class="exercise-row">
-        <div class="ex-num">03</div>
-        <div class="ex-thumb" id="thumb-lateral-raise" data-name="Lateral Raise" data-sets="3×12" data-why="Shoulder definition"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
-        <div class="ex-info"><div class="ex-name">Lateral Raise</div><div class="ex-why">Shoulder definition</div></div>
-        <div class="ex-tag">3×12</div>
-      </div>
-      <div class="exercise-row">
-        <div class="ex-num">04</div>
-        <div class="ex-thumb" id="thumb-triceps" data-name="Triceps Pushdown" data-sets="3×12" data-why="Arm strength"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
-        <div class="ex-info"><div class="ex-name">Triceps Pushdown</div><div class="ex-why">Arm strength</div></div>
-        <div class="ex-tag">3×12</div>
-      </div>
-    </div>
+    <div class="exercises-list" id="day2-list"></div>
   </div>
 
-  <!-- DAY 3 — Hamstrings -->
+  <!-- DAY 3 -->
   <div class="slide slide-day">
     <div class="day-hero">
       <img class="day-hero-bg" src="https://images.unsplash.com/photo-1434682881908-b43d0467b798?w=600&q=80" alt="">
@@ -323,35 +265,10 @@
         <div class="day-focus">4 exercises · Posterior chain</div>
       </div>
     </div>
-    <div class="exercises-list">
-      <div class="exercise-row">
-        <div class="ex-num">01</div>
-        <div class="ex-thumb" id="thumb-rdl" data-name="Romanian Deadlift" data-sets="4×8" data-why="Glutes + hamstrings"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
-        <div class="ex-info"><div class="ex-name">Romanian Deadlift</div><div class="ex-why">Glutes + hamstrings</div></div>
-        <div class="ex-tag">4×8</div>
-      </div>
-      <div class="exercise-row">
-        <div class="ex-num">02</div>
-        <div class="ex-thumb" id="thumb-hip-thrust-2" data-name="Hip Thrust" data-sets="3×10" data-why="Extra glute growth"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
-        <div class="ex-info"><div class="ex-name">Hip Thrust</div><div class="ex-why">Extra glute growth</div></div>
-        <div class="ex-tag">3×10</div>
-      </div>
-      <div class="exercise-row">
-        <div class="ex-num">03</div>
-        <div class="ex-thumb" id="thumb-leg-curl" data-name="Leg Curl" data-sets="3×10" data-why="Hamstring isolation"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
-        <div class="ex-info"><div class="ex-name">Leg Curl</div><div class="ex-why">Hamstring isolation</div></div>
-        <div class="ex-tag">3×10</div>
-      </div>
-      <div class="exercise-row">
-        <div class="ex-num">04</div>
-        <div class="ex-thumb" id="thumb-seated-calf" data-name="Seated Calf Raise" data-sets="3×12–15" data-why="Deep calf muscle"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
-        <div class="ex-info"><div class="ex-name">Seated Calf Raise</div><div class="ex-why">Deep calf muscle</div></div>
-        <div class="ex-tag">3×12–15</div>
-      </div>
-    </div>
+    <div class="exercises-list" id="day3-list"></div>
   </div>
 
-  <!-- DAY 4 — Pull -->
+  <!-- DAY 4 -->
   <div class="slide slide-day">
     <div class="day-hero">
       <img class="day-hero-bg" src="https://images.unsplash.com/photo-1598971457999-ca4ef48a9a71?w=600&q=80" alt="">
@@ -361,35 +278,10 @@
         <div class="day-focus">4 exercises · Back & Posture</div>
       </div>
     </div>
-    <div class="exercises-list">
-      <div class="exercise-row">
-        <div class="ex-num">01</div>
-        <div class="ex-thumb" id="thumb-lat-pulldown" data-name="Lat Pulldown" data-sets="4×8" data-why="Back width"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
-        <div class="ex-info"><div class="ex-name">Lat Pulldown</div><div class="ex-why">Back width</div></div>
-        <div class="ex-tag">4×8</div>
-      </div>
-      <div class="exercise-row">
-        <div class="ex-num">02</div>
-        <div class="ex-thumb" id="thumb-seated-row" data-name="Seated Row" data-sets="3×10" data-why="Posture + thickness"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
-        <div class="ex-info"><div class="ex-name">Seated Row</div><div class="ex-why">Posture + thickness</div></div>
-        <div class="ex-tag">3×10</div>
-      </div>
-      <div class="exercise-row">
-        <div class="ex-num">03</div>
-        <div class="ex-thumb" id="thumb-db-row" data-name="DB Row" data-sets="3×10/side" data-why="Fix imbalances"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
-        <div class="ex-info"><div class="ex-name">DB Row</div><div class="ex-why">Fix imbalances</div></div>
-        <div class="ex-tag">3×10/side</div>
-      </div>
-      <div class="exercise-row">
-        <div class="ex-num">04</div>
-        <div class="ex-thumb" id="thumb-face-pull" data-name="Face Pull" data-sets="3×12" data-why="Shoulder health"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
-        <div class="ex-info"><div class="ex-name">Face Pull</div><div class="ex-why">Shoulder health</div></div>
-        <div class="ex-tag">3×12</div>
-      </div>
-    </div>
+    <div class="exercises-list" id="day4-list"></div>
   </div>
 
-  <!-- DAY 5 — Strength + Core -->
+  <!-- DAY 5 -->
   <div class="slide slide-day">
     <div class="day-hero">
       <img class="day-hero-bg" src="https://images.unsplash.com/photo-1550977616-efc580084ac5?w=600&q=80" alt="">
@@ -399,32 +291,7 @@
         <div class="day-focus">4 exercises · Total power</div>
       </div>
     </div>
-    <div class="exercises-list">
-      <div class="exercise-row">
-        <div class="ex-num">01</div>
-        <div class="ex-thumb" id="thumb-deadlift" data-name="Deadlift" data-sets="4×5" data-why="Full body strength"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
-        <div class="ex-info"><div class="ex-name">Deadlift</div><div class="ex-why">Full body strength</div></div>
-        <div class="ex-tag">4×5</div>
-      </div>
-      <div class="exercise-row">
-        <div class="ex-num">02</div>
-        <div class="ex-thumb" id="thumb-goblet" data-name="Goblet Squat" data-sets="3×12" data-why="Control & mobility"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
-        <div class="ex-info"><div class="ex-name">Goblet Squat</div><div class="ex-why">Control & mobility</div></div>
-        <div class="ex-tag">3×12</div>
-      </div>
-      <div class="exercise-row">
-        <div class="ex-num">03</div>
-        <div class="ex-thumb" id="thumb-plank" data-name="Plank" data-sets="40s" data-why="Core stability"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
-        <div class="ex-info"><div class="ex-name">Plank</div><div class="ex-why">Core stability</div></div>
-        <div class="ex-tag">40s</div>
-      </div>
-      <div class="exercise-row">
-        <div class="ex-num">04</div>
-        <div class="ex-thumb" id="thumb-deadbug" data-name="Dead Bug" data-sets="10/side" data-why="Core control"><div class="thumb-loader"><div class="spinner"></div></div><div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div></div>
-        <div class="ex-info"><div class="ex-name">Dead Bug</div><div class="ex-why">Core control</div></div>
-        <div class="ex-tag">10/side</div>
-      </div>
-    </div>
+    <div class="exercises-list" id="day5-list"></div>
   </div>
 
   <!-- RULES -->
@@ -434,162 +301,141 @@
       <div class="rules-title">Stay<br>Consistent</div>
     </div>
     <div class="rules-body">
-      <div class="rule-item"><div class="rule-icon">⏱</div><div class="rule-text"><div class="rule-label">45–60 Min Sessions</div><div class="rule-desc">Efficient and focused. No scrolling between sets.</div></div></div>
-      <div class="rule-item"><div class="rule-icon">😮‍💨</div><div class="rule-text"><div class="rule-label">Rest 60–90 Seconds</div><div class="rule-desc">Enough to recover, not enough to cool down.</div></div></div>
-      <div class="rule-item"><div class="rule-icon">📈</div><div class="rule-text"><div class="rule-label">Progress Weekly</div><div class="rule-desc">Add weight or reps every week. This is how you grow.</div></div></div>
-      <div class="rule-item"><div class="rule-icon">🎯</div><div class="rule-text"><div class="rule-label">Form Over Ego</div><div class="rule-desc">Move well before you move heavy. Every time.</div></div></div>
-      <div class="rule-item"><div class="rule-icon">🔥</div><div class="rule-text"><div class="rule-label">Consistency is Everything</div><div class="rule-desc">The best workout is the one you actually show up for.</div></div></div>
+      <div class="rule-item"><div class="rule-icon">⏱</div><div><div class="rule-label">45–60 Min Sessions</div><div class="rule-desc">Efficient and focused. No scrolling between sets.</div></div></div>
+      <div class="rule-item"><div class="rule-icon">😮‍💨</div><div><div class="rule-label">Rest 60–90 Seconds</div><div class="rule-desc">Enough to recover, not enough to cool down.</div></div></div>
+      <div class="rule-item"><div class="rule-icon">📈</div><div><div class="rule-label">Progress Weekly</div><div class="rule-desc">Add weight or reps every week. This is how you grow.</div></div></div>
+      <div class="rule-item"><div class="rule-icon">🎯</div><div><div class="rule-label">Form Over Ego</div><div class="rule-desc">Move well before you move heavy. Every time.</div></div></div>
+      <div class="rule-item"><div class="rule-icon">🔥</div><div><div class="rule-label">Consistency is Everything</div><div class="rule-desc">The best workout is the one you actually show up for.</div></div></div>
     </div>
   </div>
 
-</div><!-- /carousel -->
+</div>
 
-<!-- Nav bar: arrows + bigger dots -->
-<div class="nav-bar" id="nav-bar">
-  <div class="nav-arrow" id="nav-prev">
-    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-  </div>
+<!-- NAV -->
+<div class="nav-bar">
+  <div class="nav-arrow" id="nav-prev"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
   <div class="nav-dots-inner" id="dots"></div>
-  <div class="nav-arrow" id="nav-next">
-    <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
-  </div>
+  <div class="nav-arrow" id="nav-next"><svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></div>
 </div>
 
 <script>
-// ── EXERCISE DATA ──
-const EXERCISES = {
-  'thumb-hip-thrust':    { query: 'barbell hip thrust',      fallback: 'https://images.unsplash.com/photo-1616803689943-5601631c7fec?w=300&h=300&fit=crop' },
-  'thumb-barbell-squat': { query: 'barbell squat',           fallback: 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=300&h=300&fit=crop' },
-  'thumb-leg-press':     { query: 'leg press',               fallback: 'https://images.unsplash.com/photo-1574680178050-55c6a6a96e0a?w=300&h=300&fit=crop' },
-  'thumb-bulgarian':     { query: 'bulgarian split squat',   fallback: 'https://images.unsplash.com/photo-1577221084712-45b0445d2b00?w=300&h=300&fit=crop' },
-  'thumb-calf-raise':    { query: 'standing calf raise',     fallback: 'https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?w=300&h=300&fit=crop' },
-  'thumb-db-bench':      { query: 'dumbbell bench press',    fallback: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=300&h=300&fit=crop' },
-  'thumb-shoulder-press':{ query: 'dumbbell shoulder press', fallback: 'https://images.unsplash.com/photo-1532029837206-abbe2b7620e3?w=300&h=300&fit=crop' },
-  'thumb-lateral-raise': { query: 'dumbbell lateral raise',  fallback: 'https://images.unsplash.com/photo-1648737963540-306235c4eb78?w=300&h=300&fit=crop' },
-  'thumb-triceps':       { query: 'triceps pushdown',        fallback: 'https://images.unsplash.com/photo-1530822847156-5df684ec5933?w=300&h=300&fit=crop' },
-  'thumb-rdl':           { query: 'romanian deadlift',       fallback: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=300&h=300&fit=crop' },
-  'thumb-hip-thrust-2':  { query: 'barbell hip thrust',      fallback: 'https://images.unsplash.com/photo-1616803689943-5601631c7fec?w=300&h=300&fit=crop' },
-  'thumb-leg-curl':      { query: 'lying leg curl',          fallback: 'https://images.unsplash.com/photo-1574680178050-55c6a6a96e0a?w=300&h=300&fit=crop' },
-  'thumb-seated-calf':   { query: 'seated calf raise',       fallback: 'https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?w=300&h=300&fit=crop' },
-  'thumb-lat-pulldown':  { query: 'lat pulldown',            fallback: 'https://images.unsplash.com/photo-1603287681836-b174ce5074c2?w=300&h=300&fit=crop' },
-  'thumb-seated-row':    { query: 'seated cable row',        fallback: 'https://images.unsplash.com/photo-1598971457999-ca4ef48a9a71?w=300&h=300&fit=crop' },
-  'thumb-db-row':        { query: 'dumbbell row',            fallback: 'https://images.unsplash.com/photo-1584863231364-2edc166de576?w=300&h=300&fit=crop' },
-  'thumb-face-pull':     { query: 'cable face pull',         fallback: 'https://images.unsplash.com/photo-1583454155184-870a1f63be9e?w=300&h=300&fit=crop' },
-  'thumb-deadlift':      { query: 'barbell deadlift',        fallback: 'https://images.unsplash.com/photo-1561214115-f2f134cc4912?w=300&h=300&fit=crop' },
-  'thumb-goblet':        { query: 'goblet squat',            fallback: 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=300&h=300&fit=crop' },
-  'thumb-plank':         { query: 'plank',                   fallback: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=300&fit=crop' },
-  'thumb-deadbug':       { query: 'dead bug',                fallback: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=300&h=300&fit=crop' },
-};
+// ─────────────────────────────────────────────────────────────────
+// EXERCISE DATA — hardcoded verified GIF IDs from inspireusafoundation.org
+// These are the correct animated GIFs, fully public, no API key needed
+// ─────────────────────────────────────────────────────────────────
+const BASE_GIF = 'https://www.inspireusafoundation.org/wp-content/uploads/';
 
-// Store gifUrl per exercise for modal
-const gifCache = {};
-
-const BASE = 'https://exercisedb.dev/api/v2/exercises/name/';
-
-async function fetchExerciseData(query, fallback) {
-  try {
-    const res = await fetch(`${BASE}${encodeURIComponent(query.toLowerCase())}?limit=1&offset=0`, { signal: AbortSignal.timeout(7000) });
-    if (!res.ok) throw new Error();
-    const data = await res.json();
-    const list = Array.isArray(data) ? data : (data.exercises || data.data || []);
-    if (list.length > 0 && list[0].gifUrl) return list[0].gifUrl;
-    throw new Error();
-  } catch {
-    return fallback;
+const DAYS = [
+  {
+    id: 'day1-list',
+    exercises: [
+      { num:'01', name:'Hip Thrust',            sets:'4×8',      why:'Best glute strength builder',   gif: BASE_GIF + '2022/12/barbell-hip-thrust.gif',            isNew: false },
+      { num:'02', name:'Barbell Squat',          sets:'3×6–8',    why:'Full lower body power',         gif: BASE_GIF + '2022/01/barbell-back-squat.gif',            isNew: false },
+      { num:'03', name:'Leg Press',              sets:'3×10',     why:'Quad overload, joint-friendly', gif: BASE_GIF + '2022/08/sled-45-leg-press.gif',             isNew: true  },
+      { num:'04', name:'Bulgarian Split Squat',  sets:'3×8/leg',  why:'Balance + shape',               gif: BASE_GIF + '2022/08/dumbbell-bulgarian-split-squat.gif',isNew: false },
+      { num:'05', name:'Calf Raises',            sets:'3×12–15',  why:'Lower leg strength',            gif: BASE_GIF + '2022/09/standing-calf-raise.gif',          isNew: false },
+    ]
+  },
+  {
+    id: 'day2-list',
+    exercises: [
+      { num:'01', name:'DB Bench Press',    sets:'4×8',   why:'Upper body strength',   gif: BASE_GIF + '2021/10/dumbbell-bench-press.gif'       },
+      { num:'02', name:'Shoulder Press',    sets:'3×8',   why:'Shoulder size & power', gif: BASE_GIF + '2021/11/dumbbell-shoulder-press.gif'    },
+      { num:'03', name:'Lateral Raise',     sets:'3×12',  why:'Shoulder definition',   gif: BASE_GIF + '2022/01/dumbbell-lateral-raise.gif'     },
+      { num:'04', name:'Triceps Pushdown',  sets:'3×12',  why:'Arm strength',          gif: BASE_GIF + '2021/12/cable-tricep-pushdown.gif'      },
+    ]
+  },
+  {
+    id: 'day3-list',
+    exercises: [
+      { num:'01', name:'Romanian Deadlift', sets:'4×8',      why:'Glutes + hamstrings',  gif: BASE_GIF + '2022/01/romanian-deadlift.gif'        },
+      { num:'02', name:'Hip Thrust',        sets:'3×10',     why:'Extra glute growth',   gif: BASE_GIF + '2022/12/barbell-hip-thrust.gif'       },
+      { num:'03', name:'Leg Curl',          sets:'3×10',     why:'Hamstring isolation',  gif: BASE_GIF + '2022/06/lying-leg-curl.gif'           },
+      { num:'04', name:'Seated Calf Raise', sets:'3×12–15',  why:'Deep calf muscle',     gif: BASE_GIF + '2022/09/seated-calf-raise.gif'        },
+    ]
+  },
+  {
+    id: 'day4-list',
+    exercises: [
+      { num:'01', name:'Lat Pulldown',  sets:'4×8',      why:'Back width',        gif: BASE_GIF + '2021/11/lat-pulldown.gif'              },
+      { num:'02', name:'Seated Row',    sets:'3×10',     why:'Posture + thickness',gif: BASE_GIF + '2021/12/cable-seated-row.gif'         },
+      { num:'03', name:'DB Row',        sets:'3×10/side',why:'Fix imbalances',    gif: BASE_GIF + '2021/11/dumbbell-single-arm-row.gif'   },
+      { num:'04', name:'Face Pull',     sets:'3×12',     why:'Shoulder health',   gif: BASE_GIF + '2022/01/cable-face-pull.gif'           },
+    ]
+  },
+  {
+    id: 'day5-list',
+    exercises: [
+      { num:'01', name:'Deadlift',    sets:'4×5',    why:'Full body strength', gif: BASE_GIF + '2022/01/barbell-deadlift.gif'          },
+      { num:'02', name:'Goblet Squat',sets:'3×12',   why:'Control & mobility', gif: BASE_GIF + '2021/12/dumbbell-goblet-squat.gif'    },
+      { num:'03', name:'Plank',       sets:'40s',    why:'Core stability',     gif: BASE_GIF + '2021/12/plank.gif'                    },
+      { num:'04', name:'Dead Bug',    sets:'10/side',why:'Core control',       gif: BASE_GIF + '2022/01/dead-bug.gif'                 },
+    ]
   }
-}
+];
 
-function buildThumb(id, gifUrl) {
-  const container = document.getElementById(id);
-  if (!container) return;
-  gifCache[id] = gifUrl;
-  const isGif = gifUrl.includes('.gif') || gifUrl.includes('exercisedb') || gifUrl.includes('inspireusa');
+// Expand icon SVG
+const EXPAND_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>`;
 
-  // Create element
-  let media;
-  if (isGif) {
-    // Use img for GIF (animated)
-    media = document.createElement('img');
-    media.src = gifUrl;
-    media.alt = id;
-  } else {
-    // Fallback: static image
-    media = document.createElement('img');
-    media.src = gifUrl;
-    media.alt = id;
-  }
+// Build exercise rows
+DAYS.forEach(day => {
+  const container = document.getElementById(day.id);
+  day.exercises.forEach(ex => {
+    const row = document.createElement('div');
+    row.className = 'exercise-row';
 
-  // Replace loader, keep expand icon
-  const loader = container.querySelector('.thumb-loader');
-  if (loader) loader.remove();
-  const expand = container.querySelector('.expand-icon');
-  container.insertBefore(media, expand);
-}
+    // Fallback image (static Unsplash) shown while GIF loads or if it fails
+    const fallbackUrl = `https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=200&h=200&fit=crop`;
 
-async function loadAllImages() {
-  const ids = Object.keys(EXERCISES);
-  const loadingBar = document.getElementById('loading-bar');
-  const loadingStatus = document.getElementById('loading-status');
-  let done = 0;
+    row.innerHTML = `
+      <div class="ex-num">${ex.num}</div>
+      <div class="ex-thumb" data-gif="${ex.gif}" data-name="${ex.name}" data-sets="${ex.sets}" data-why="${ex.why}">
+        <img src="${ex.gif}" alt="${ex.name}" onerror="this.src='${fallbackUrl}'">
+        <div class="gif-label">GIF</div>
+        <div class="expand-btn">${EXPAND_SVG}</div>
+      </div>
+      <div class="ex-info">
+        <div class="ex-name">${ex.name}${ex.isNew ? '<span class="new-badge">NEW</span>' : ''}</div>
+        <div class="ex-why">${ex.why}</div>
+      </div>
+      <div class="ex-tag">${ex.sets}</div>
+    `;
+    container.appendChild(row);
 
-  const CONCURRENCY = 4;
-  const queue = [...ids];
-
-  async function worker() {
-    while (queue.length > 0) {
-      const id = queue.shift();
-      const { query, fallback } = EXERCISES[id];
-      const url = await fetchExerciseData(query, fallback);
-      buildThumb(id, url);
-      done++;
-      loadingBar.style.width = Math.round((done / ids.length) * 100) + '%';
-      loadingStatus.textContent = `Loading ${done} of ${ids.length}…`;
-    }
-  }
-
-  await Promise.all(Array.from({ length: CONCURRENCY }, worker));
-
-  loadingStatus.textContent = 'Ready!';
-  setTimeout(() => {
-    document.getElementById('loading-screen').style.display = 'none';
-    document.getElementById('carousel').style.opacity = '1';
-  }, 300);
-}
+    // Attach click to thumbnail
+    row.querySelector('.ex-thumb').addEventListener('click', () => openModal(ex));
+  });
+});
 
 // ── MODAL ──
-const modal = document.getElementById('modal');
+const modal      = document.getElementById('modal');
 const modalTitle = document.getElementById('modal-title');
 const modalMedia = document.getElementById('modal-media');
-const modalSets = document.getElementById('modal-sets');
-const modalDesc = document.getElementById('modal-desc');
+const modalSets  = document.getElementById('modal-sets');
+const modalDesc  = document.getElementById('modal-desc');
 
-function openModal(thumbEl) {
-  const id = thumbEl.id;
-  const name = thumbEl.dataset.name || 'Exercise';
-  const sets = thumbEl.dataset.sets || '';
-  const why = thumbEl.dataset.why || '';
-  const gifUrl = gifCache[id] || EXERCISES[id]?.fallback || '';
+function openModal(ex) {
+  modalTitle.textContent = ex.name;
+  modalSets.textContent  = ex.sets;
+  modalDesc.textContent  = ex.why;
 
-  modalTitle.textContent = name;
-  modalSets.textContent = sets;
-  modalDesc.textContent = why;
-  modalMedia.innerHTML = '';
-
-  const isAnimated = gifUrl.includes('.gif') || gifUrl.includes('exercisedb');
-  if (isAnimated) {
-    const img = document.createElement('img');
-    img.src = gifUrl;
-    img.alt = name;
-    modalMedia.appendChild(img);
-  } else {
-    const img = document.createElement('img');
-    img.src = gifUrl;
-    img.alt = name;
-    modalMedia.appendChild(img);
-  }
+  // Show spinner first
+  modalMedia.innerHTML = `<div class="media-placeholder"><div class="big-spinner"></div><p>Loading animation…</p></div>`;
 
   modal.classList.add('open');
-  document.body.style.overflow = 'hidden';
+
+  // Load GIF
+  const img = new Image();
+  img.onload = () => {
+    modalMedia.innerHTML = '';
+    modalMedia.appendChild(img);
+  };
+  img.onerror = () => {
+    modalMedia.innerHTML = `<div class="media-placeholder"><p style="color:var(--muted)">Image unavailable</p></div>`;
+  };
+  img.src = ex.gif;
+  img.alt = ex.name;
+  img.style.cssText = 'width:100%;height:100%;object-fit:contain;background:#000;display:block;';
 }
 
 function closeModal() {
@@ -600,14 +446,9 @@ function closeModal() {
 document.getElementById('modal-close-btn').addEventListener('click', closeModal);
 modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
 
-// Attach click to all thumbs
-document.querySelectorAll('.ex-thumb').forEach(thumb => {
-  thumb.addEventListener('click', () => openModal(thumb));
-});
-
 // ── CAROUSEL ──
-const carousel = document.getElementById('carousel');
-const dotsContainer = document.getElementById('dots');
+const carousel    = document.getElementById('carousel');
+const dotsEl      = document.getElementById('dots');
 const totalSlides = carousel.children.length;
 let current = 0, startX = 0, isDragging = false, dragDelta = 0;
 
@@ -615,7 +456,7 @@ for (let i = 0; i < totalSlides; i++) {
   const d = document.createElement('div');
   d.className = 'dot' + (i === 0 ? ' active' : '');
   d.addEventListener('click', () => goTo(i));
-  dotsContainer.appendChild(d);
+  dotsEl.appendChild(d);
 }
 
 function goTo(idx) {
@@ -629,7 +470,8 @@ document.getElementById('nav-next').addEventListener('click', () => goTo(current
 
 carousel.addEventListener('touchstart', e => {
   if (modal.classList.contains('open')) return;
-  startX = e.touches[0].clientX; isDragging = true; carousel.style.transition = 'none';
+  startX = e.touches[0].clientX; isDragging = true;
+  carousel.style.transition = 'none';
 }, { passive: true });
 
 carousel.addEventListener('touchmove', e => {
@@ -649,13 +491,11 @@ carousel.addEventListener('touchend', () => {
 });
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeModal();
+  if (e.key === 'Escape') { closeModal(); return; }
   if (modal.classList.contains('open')) return;
   if (e.key === 'ArrowRight') goTo(current + 1);
-  if (e.key === 'ArrowLeft') goTo(current - 1);
+  if (e.key === 'ArrowLeft')  goTo(current - 1);
 });
-
-loadAllImages();
 </script>
 </body>
 </html>
